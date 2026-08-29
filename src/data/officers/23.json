@@ -61,18 +61,7 @@
     {
       "id": "activity-1",
       "name": "高銓鈞",
-      "role": "活動",
-      "department": "活動組",
-      "grade": "",
-      "instagram": "",
-      "email": "",
-      "photo": "",
-      "order": 1
-    },
-    {
-      "id": "activity-2",
-      "name": "羅來恩",
-      "role": "活動",
+      "role": "副活動長",
       "department": "活動組",
       "grade": "",
       "instagram": "",
@@ -81,15 +70,26 @@
       "order": 2
     },
     {
-      "id": "pr-1",
-      "name": "曾暐宸",
-      "role": "公關",
-      "department": "公關組",
+      "id": "activity-2",
+      "name": "羅來恩",
+      "role": "活動長",
+      "department": "活動組",
       "grade": "",
       "instagram": "",
       "email": "",
       "photo": "",
       "order": 1
+    },
+    {
+      "id": "pr-1",
+      "name": "曾暐宸",
+      "role": "副公關",
+      "department": "公關組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 2
     },
     {
       "id": "pr-2",
@@ -100,7 +100,7 @@
       "instagram": "",
       "email": "",
       "photo": "",
-      "order": 2
+      "order": 1
     },
     {
       "id": "design",
