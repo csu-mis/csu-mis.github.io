@@ -6,7 +6,7 @@ summary: 加退選期間為 9 月 15 日至 9 月 26 日，本篇整理各階段
 author: 學術部
 tags: [選課, 課務, 學分]
 pinned: false
-draft: false
+draft: true
 ---
 
 本學期加退選即將開始，請務必留意以下時程，逾期系統將關閉，不受理個案處理。

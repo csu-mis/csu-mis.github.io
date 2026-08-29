@@ -22,12 +22,22 @@ export function slugToCategory(slug: string): Category | undefined {
 }
 
 /**
+ * 草稿是否納入。預設一律排除，只有 `pnpm dev` 會帶 SHOW_DRAFTS=1 開啟預覽。
+ *
+ * 不用 import.meta.env.PROD 判斷：它取決於 NODE_ENV，而 GitHub Actions
+ * runner 的 NODE_ENV 並不是 production，會讓 PROD 變成 false，
+ * 草稿因此被當成 dev 預覽而發佈到線上（實際發生過）。
+ * 這裡改成必須明確 opt-in，漏設環境變數時的預設行為是「不發佈草稿」。
+ */
+const SHOW_DRAFTS = process.env.SHOW_DRAFTS === '1';
+
+/**
  * 取得已發布的公告，置頂優先、再依日期新到舊排序。
- * draft: true 的公告在正式 build 時會被排除，但 dev 模式仍可預覽。
+ * draft: true 的公告只有在 SHOW_DRAFTS=1 時才會出現。
  */
 export async function getPublishedAnnouncements(): Promise<Announcement[]> {
   const all = await getCollection('announcements', ({ data }) =>
-    import.meta.env.PROD ? data.draft !== true : true
+    SHOW_DRAFTS ? true : data.draft !== true
   );
 
   return all.sort((a, b) => {

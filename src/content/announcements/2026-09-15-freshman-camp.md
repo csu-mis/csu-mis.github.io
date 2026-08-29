@@ -6,7 +6,7 @@ summary: 兩天一夜的迎新宿營即將登場，名額 120 位，額滿為止
 author: 活動部
 tags: [迎新, 大一, 報名]
 pinned: true
-draft: false
+draft: true
 ---
 
 大一的各位，歡迎加入資管系！

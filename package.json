@@ -5,8 +5,8 @@
   "type": "module",
   "packageManager": "pnpm@11.22.0",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
+    "dev": "SHOW_DRAFTS=1 astro dev",
+    "start": "SHOW_DRAFTS=1 astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
