@@ -1,0 +1,59 @@
+name: 部署到 GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # 允許在 Actions 頁面手動觸發
+  workflow_dispatch:
+
+# 授予 GITHUB_TOKEN 部署 Pages 所需權限
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同時只跑一個部署；新的 push 會取消進行中的舊部署
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 取出原始碼
+        uses: actions/checkout@v4
+
+      - name: 安裝 pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 安裝 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: 安裝相依套件
+        run: pnpm install --frozen-lockfile
+
+      - name: 型別檢查
+        run: pnpm check
+
+      - name: 建置網站
+        run: pnpm build
+
+      - name: 上傳建置產物
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 部署
+        id: deployment
+        uses: actions/deploy-pages@v4

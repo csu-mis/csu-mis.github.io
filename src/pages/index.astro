@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AnnouncementCard from '../components/AnnouncementCard.astro';
+import Icon from '../components/Icon.astro';
+import { site, home } from '../lib/site';
+import { getPublishedAnnouncements } from '../lib/announcements';
+import { useTranslations } from '../i18n';
+import { url } from '../lib/url';
+
+const t = useTranslations();
+const latest = (await getPublishedAnnouncements()).slice(0, 3);
+
+type IconName = 'calendar' | 'book' | 'megaphone' | 'users';
+---
+
+<BaseLayout description={site.description}>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__bg" aria-hidden="true">
+      <span class="hero__glow"></span>
+    </div>
+    <div class="container hero__inner">
+      <p class="hero__eyebrow">{t.home.eyebrow}</p>
+      <h1 class="hero__title">
+        {t.home.heroTitle}
+        <span class="hero__accent">{t.home.heroTitleAccent}</span>
+      </h1>
+      <p class="hero__lead">{t.home.heroLead}</p>
+      <div class="hero__actions">
+        <a class="button button--on-dark" href={url("/announcements")}>
+          {t.home.heroPrimaryCta}
+          <Icon name="arrow-right" size={18} />
+        </a>
+        <a class="button button--outline-light" href={url("/officers")}>
+          {t.home.heroSecondaryCta}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 最新公告 -->
+  <section class="section" aria-labelledby="latest-heading">
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow">Announcements</p>
+          <h2 id="latest-heading" class="section-title">{t.home.latestTitle}</h2>
+          <p class="section-lead">{t.home.latestLead}</p>
+        </div>
+        <a class="button button--secondary section-head__cta" href={url("/announcements")}>
+          {t.home.latestMore}
+          <Icon name="arrow-right" size={18} />
+        </a>
+      </div>
+
+      {
+        latest.length > 0 ? (
+          <div class="grid grid--3 reveal">
+            {latest.map((entry) => (
+              <AnnouncementCard entry={entry} />
+            ))}
+          </div>
+        ) : (
+          <p class="empty">{t.home.latestEmpty}</p>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- 我們在做什麼 -->
+  <section class="section highlights" aria-labelledby="highlights-heading">
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow">What we do</p>
+          <h2 id="highlights-heading" class="section-title">{t.home.highlightsTitle}</h2>
+          <p class="section-lead">{t.home.highlightsLead}</p>
+        </div>
+      </div>
+
+      <div class="grid highlights__grid reveal">
+        {
+          home.highlights.map((item) => (
+            <article class="card highlight">
+              <span class="highlight__icon" aria-hidden="true">
+                <Icon name={item.icon as IconName} size={22} />
+              </span>
+              <h3 class="highlight__title">{item.title}</h3>
+              <p class="highlight__desc">{item.description}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta reveal">
+        <div>
+          <h2 class="cta__title">{t.home.ctaTitle}</h2>
+          <p class="cta__lead">{t.home.ctaLead}</p>
+        </div>
+        <a class="button button--primary" href={url("/about") + "#contact"}>
+          {t.home.ctaButton}
+          <Icon name="arrow-right" size={18} />
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

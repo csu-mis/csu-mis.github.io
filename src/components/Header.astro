@@ -1,0 +1,139 @@
+---
+import { site } from '../lib/site';
+import { useTranslations } from '../i18n';
+import { url } from '../lib/url';
+
+const t = useTranslations();
+const { pathname } = Astro.url;
+
+const home = url('/');
+
+const links = [
+  { href: home, label: t.nav.home },
+  { href: url('/announcements'), label: t.nav.announcements },
+  { href: url('/officers'), label: t.nav.officers },
+  { href: url('/about'), label: t.nav.about },
+];
+
+// pathname 帶有 base，links 也已帶上，兩邊可直接比對
+const isActive = (href: string) =>
+  href === home
+    ? pathname.replace(/\/$/, '') === home.replace(/\/$/, '')
+    : pathname.startsWith(href);
+---
+
+<header class="header" data-header>
+  <div class="container header__inner">
+    <a href={home} class="brand" aria-label={`${site.name} 首頁`}>
+      <img
+        class="brand__logo"
+        src={url("/logo.png")}
+        alt=""
+        width="44"
+        height="44"
+        decoding="async"
+      />
+      <span class="brand__text">
+        <span class="brand__school">{site.school}</span>
+        <span class="brand__name">{site.shortName}</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="主要導覽">
+      <ul class="nav__list">
+        {
+          links.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class:list={['nav__link', { 'is-active': isActive(link.href) }]}
+                aria-current={isActive(link.href) ? 'page' : undefined}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <button
+      type="button"
+      class="nav-toggle"
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+      data-nav-toggle
+    >
+      <span class="visually-hidden" data-nav-toggle-label>{t.nav.openMenu}</span>
+      <span class="nav-toggle__bars" aria-hidden="true">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+      </span>
+    </button>
+  </div>
+
+  <div id="mobile-nav" class="mobile-nav" data-mobile-nav inert>
+    <div class="mobile-nav__inner">
+      <nav class="container" aria-label="行動版導覽">
+        <ul class="mobile-nav__list">
+          {
+            links.map((link, index) => (
+              <li class="mobile-nav__item" style={`--i: ${index}`}>
+                <a
+                  href={link.href}
+                  class:list={['mobile-nav__link', { 'is-active': isActive(link.href) }]}
+                  aria-current={isActive(link.href) ? 'page' : undefined}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<script>
+  // 行動版選單：漢堡變 X、覆蓋層展開、Escape 關閉、開啟時鎖定背景捲動。
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  const menu = document.querySelector<HTMLElement>('[data-mobile-nav]');
+  const label = document.querySelector<HTMLElement>('[data-nav-toggle-label]');
+
+  if (header && toggle && menu) {
+    const setOpen = (open: boolean) => {
+      header.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      // inert 讓關閉的選單不會被鍵盤 tab 到，同時保留 CSS 收合動畫
+      if (open) menu.removeAttribute('inert');
+      else menu.setAttribute('inert', '');
+      document.body.classList.toggle('is-scroll-locked', open);
+      if (label) label.textContent = open ? '關閉選單' : '開啟選單';
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    // 點選連結後關閉（同頁錨點時尤其需要）
+    menu.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    // 放大到桌機寬度時，殘留的開啟狀態要清掉
+    const desktop = window.matchMedia('(min-width: 821px)');
+    desktop.addEventListener('change', (event) => {
+      if (event.matches) setOpen(false);
+    });
+  }
+</script>

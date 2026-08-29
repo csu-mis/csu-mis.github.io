@@ -1,0 +1,43 @@
+---
+import Icon from './Icon.astro';
+import { CURRENT_TERM, termLabel, termPath, type OfficerTerm } from '../lib/officers';
+import { useTranslations } from '../i18n';
+
+interface Props {
+  terms: OfficerTerm[];
+  /** 目前顯示的屆數 */
+  active: number;
+}
+
+const { terms, active } = Astro.props;
+const t = useTranslations();
+---
+
+{
+  terms.length > 1 && (
+    <nav class="term-switcher" aria-label={t.officers.termSwitchLabel}>
+      <p class="term-switcher__label" id="term-switcher-label">
+        <Icon name="history" size={16} />
+        {t.officers.termFieldLabel}
+      </p>
+
+      <ul class="term-switcher__list" aria-labelledby="term-switcher-label">
+        {terms.map((entry) => (
+          <li>
+            <a
+              href={termPath(entry.term)}
+              class:list={['term-switcher__item', { 'is-active': entry.term === active }]}
+              aria-current={entry.term === active ? 'page' : undefined}
+            >
+              <span class="term-switcher__term">{termLabel(entry.term)}</span>
+              {entry.years && <span class="term-switcher__years">{entry.years}</span>}
+              {entry.term === CURRENT_TERM && (
+                <span class="term-switcher__badge">{t.officers.currentBadge}</span>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

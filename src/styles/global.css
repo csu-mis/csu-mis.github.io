@@ -1,0 +1,585 @@
+/* ==========================================================================
+   CSU MIS SA — 設計系統
+   風格：現代學院風（Soft UI Evolution）
+   來源：ui-ux-pro-max design system，見 design-system/csu-mis-sa/MASTER.md
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600;700&display=swap');
+
+
+/* --------------------------------------------------------------------------
+   1. 設計權杖
+   -------------------------------------------------------------------------- */
+:root {
+  /* 色彩 —— 只在這裡定義色票，元件一律使用語意變數，不寫死 hex */
+  --color-primary: #1e3a5f;
+  --color-primary-hover: #16304f;
+  --color-primary-soft: #eef2f8;
+  --color-on-primary: #ffffff;
+  --color-secondary: #2563eb;
+  --color-accent: #a16207;
+  --color-accent-soft: #fdf6e7;
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-foreground: #0f172a;
+  --color-muted: #e9eef5;
+  --color-muted-foreground: #55647a;
+  --color-border: #cbd5e1;
+  --color-border-soft: #e2e8f0;
+  --color-destructive: #dc2626;
+  --color-ring: #1e3a5f;
+
+  /* 字體 —— 拉丁文用 EB Garamond，中文由 Noto Serif/Sans TC 承接 */
+  --font-serif: 'EB Garamond', 'Noto Serif TC', 'Songti TC', Georgia, serif;
+  --font-sans: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+
+  /* 字級 —— 以 clamp 做流體排版，不需要為每個斷點寫死尺寸 */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.4rem);
+  --text-2xl: clamp(1.5rem, 1.35rem + 0.75vw, 1.85rem);
+  --text-3xl: clamp(1.85rem, 1.6rem + 1.2vw, 2.4rem);
+  --text-4xl: clamp(2.2rem, 1.8rem + 2vw, 3.25rem);
+  --text-5xl: clamp(2.6rem, 2rem + 3.2vw, 4.25rem);
+
+  /* 間距 —— density 4/10：standard */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* 圓角與陰影 —— 比 flat 有層次，比 neumorphism 清晰 */
+  --radius-sm: 4px;
+  --radius: 8px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow: 0 2px 8px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.1), 0 2px 8px rgba(15, 23, 42, 0.05);
+
+  /* 動態 —— 200–300ms，符合設計系統的 modern 節奏 */
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --duration: 240ms;
+
+  /* 版面 */
+  --container: 1140px;
+  --container-narrow: 760px;
+  --header-height: 68px;
+}
+
+/* --------------------------------------------------------------------------
+   2. 重置與基礎
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + var(--space-4));
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+svg {
+  flex-shrink: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
+  text-underline-offset: 0.2em;
+  transition: color var(--duration) var(--ease),
+    text-decoration-color var(--duration) var(--ease);
+}
+
+a:hover {
+  color: var(--color-accent);
+  text-decoration-color: currentColor;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+ul,
+ol {
+  padding-inline-start: 1.25em;
+}
+
+/* 鍵盤可見焦點 —— 任何情況都不移除 focus ring */
+:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-primary) 18%, transparent);
+}
+
+/* --------------------------------------------------------------------------
+   3. 版面工具
+   -------------------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding-inline: var(--space-4);
+  }
+}
+
+.container--narrow {
+  max-width: var(--container-narrow);
+}
+
+.section {
+  padding-block: clamp(var(--space-12), 8vw, var(--space-24));
+}
+
+.section--tight {
+  padding-block: clamp(var(--space-8), 5vw, var(--space-16));
+}
+
+.stack > * + * {
+  margin-block-start: var(--space-4);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: var(--space-4);
+  inset-block-start: -100%;
+  z-index: 100;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: inset-block-start var(--duration) var(--ease);
+}
+
+.skip-link:focus {
+  inset-block-start: var(--space-4);
+  color: var(--color-on-primary);
+}
+
+/* --------------------------------------------------------------------------
+   4. 排版元素
+   -------------------------------------------------------------------------- */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--color-accent);
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+}
+
+.section-title {
+  font-size: var(--text-3xl);
+  color: var(--color-primary);
+}
+
+.section-lead {
+  max-width: 60ch;
+  margin-block-start: var(--space-3);
+  color: var(--color-muted-foreground);
+  font-size: var(--text-lg);
+}
+
+.page-header {
+  padding-block: clamp(var(--space-12), 7vw, var(--space-16)) var(--space-8);
+  border-bottom: 1px solid var(--color-border-soft);
+  background:
+    linear-gradient(180deg, var(--color-primary-soft), transparent 88%),
+    var(--color-background);
+}
+
+.page-header h1 {
+  margin-block-start: var(--space-3);
+  font-size: var(--text-4xl);
+  color: var(--color-primary);
+}
+
+/* --------------------------------------------------------------------------
+   5. 元件：按鈕
+   -------------------------------------------------------------------------- */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px; /* 觸控目標下限 */
+  padding: var(--space-3) var(--space-6);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--duration) var(--ease),
+    border-color var(--duration) var(--ease), color var(--duration) var(--ease),
+    transform var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
+}
+
+.button--primary {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: var(--shadow);
+}
+
+.button--primary:hover {
+  background: var(--color-primary-hover);
+  color: var(--color-on-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.button--secondary {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.button--secondary:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.button--ghost {
+  padding-inline: var(--space-3);
+  background: transparent;
+  color: var(--color-primary);
+}
+
+.button--ghost:hover {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.button--on-dark {
+  background: var(--color-surface);
+  color: var(--color-primary);
+}
+
+.button--on-dark:hover {
+  background: var(--color-accent-soft);
+  color: var(--color-primary);
+}
+
+.button--outline-light {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.42);
+  color: #ffffff;
+}
+
+.button--outline-light:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.75);
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   6. 元件：卡片、標籤
+   -------------------------------------------------------------------------- */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration) var(--ease),
+    box-shadow var(--duration) var(--ease), border-color var(--duration) var(--ease);
+}
+
+.card--interactive:hover,
+.card--interactive:focus-within {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
+  box-shadow: var(--shadow-lg);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-3);
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.tag--accent {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.tag--outline {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-muted-foreground);
+}
+
+/* --------------------------------------------------------------------------
+   7. 網格
+   -------------------------------------------------------------------------- */
+.grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.grid--2 {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.grid--3 {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.grid--4 {
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+
+/* --------------------------------------------------------------------------
+   8. Markdown 內文（公告內頁）
+   -------------------------------------------------------------------------- */
+.prose {
+  font-size: var(--text-lg);
+  line-height: 1.85;
+  color: color-mix(in srgb, var(--color-foreground) 92%, transparent);
+}
+
+.prose > * + * {
+  margin-block-start: var(--space-6);
+}
+
+.prose h2 {
+  margin-block-start: var(--space-12);
+  padding-block-end: var(--space-3);
+  border-bottom: 1px solid var(--color-border-soft);
+  font-size: var(--text-2xl);
+  color: var(--color-primary);
+}
+
+.prose h3 {
+  margin-block-start: var(--space-8);
+  font-size: var(--text-xl);
+  color: var(--color-primary);
+}
+
+.prose ul,
+.prose ol {
+  padding-inline-start: 1.4em;
+}
+
+.prose li + li {
+  margin-block-start: var(--space-2);
+}
+
+.prose li::marker {
+  color: var(--color-accent);
+}
+
+.prose a {
+  font-weight: 500;
+}
+
+.prose blockquote {
+  padding: var(--space-2) var(--space-6);
+  border-inline-start: 3px solid var(--color-accent);
+  background: var(--color-accent-soft);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--color-muted-foreground);
+  font-style: italic;
+}
+
+.prose blockquote > * + * {
+  margin-block-start: var(--space-3);
+}
+
+.prose img {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-soft);
+}
+
+.prose code {
+  padding: 0.15em 0.4em;
+  background: var(--color-muted);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+}
+
+.prose pre {
+  padding: var(--space-4) var(--space-6);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+
+.prose pre code {
+  padding: 0;
+  background: none;
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-base);
+}
+
+.prose th,
+.prose td {
+  padding: var(--space-3);
+  border: 1px solid var(--color-border-soft);
+  text-align: start;
+}
+
+.prose th {
+  background: var(--color-primary-soft);
+  font-weight: 600;
+}
+
+/* 表格在窄螢幕可獨立橫向捲動，頁面本身永遠不橫向捲動 */
+.table-scroll {
+  overflow-x: auto;
+}
+
+/* 空狀態：公告列表、幹部名單共用 */
+.empty {
+  padding: clamp(var(--space-12), 8vw, var(--space-16)) var(--space-6);
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  color: var(--color-muted-foreground);
+}
+
+/* --------------------------------------------------------------------------
+   9. 進場動畫（尊重 prefers-reduced-motion）
+   -------------------------------------------------------------------------- */
+/* 只有在 <html class="js"> 時才隱藏（由 head 的 inline script 加上）。
+   JS 停用或載入失敗時，內容一律完整顯示，不會永久隱形。 */
+@media (prefers-reduced-motion: no-preference) {
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 380ms var(--ease), transform 380ms var(--ease);
+  }
+
+  .js .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

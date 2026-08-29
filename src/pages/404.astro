@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { useTranslations } from '../i18n';
+import { url } from '../lib/url';
+
+const t = useTranslations();
+---
+
+<BaseLayout title={t.notFound.title} description={t.notFound.lead}>
+  <section class="notfound">
+    <div class="container container--narrow">
+      <p class="notfound__code" aria-hidden="true">404</p>
+      <h1 class="notfound__title">{t.notFound.title}</h1>
+      <p class="notfound__lead">{t.notFound.lead}</p>
+      <div class="notfound__actions">
+        <a class="button button--primary" href={url("/")}>
+          {t.notFound.cta}
+          <Icon name="arrow-right" size={18} />
+        </a>
+        <a class="button button--secondary" href={url("/announcements")}>{t.nav.announcements}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

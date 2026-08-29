@@ -1,0 +1,23 @@
+# Claude / AI 規範入口（不進版控）
+CLAUDE.md
+AGENTS.md
+
+# build 產物
+dist/
+.astro/
+
+# 相依套件
+node_modules/
+
+# 環境變數與機密（.env.local 不符合 .env.*.local，所以用萬用字元一次蓋掉）
+.env
+.env.*
+!.env.example
+
+# 系統與編輯器
+.DS_Store
+.claude/
+*.tsbuildinfo
+.vscode/
+.idea/
+*.log

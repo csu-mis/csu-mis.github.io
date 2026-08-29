@@ -1,0 +1,25 @@
+{
+  "name": "正修科技大學資訊管理系系學會",
+  "shortName": "資管系系學會",
+  "englishName": "CSU MIS Student Association",
+  "abbr": "CSU_MIS_SA",
+  "term": 25,
+  "termLabel": "第 25 屆",
+  "school": "正修科技大學",
+  "department": "資訊管理系",
+  "url": "https://csu-mis.github.io",
+  "description": "正修科技大學資訊管理系系學會第 25 屆官方網站，發布系上公告、活動資訊與幹部介紹。",
+  "contact": {
+    "email": "samis@gcloud.csu.edu.tw",
+    "office": "正修科技大學 圖書科技大樓 150803-2",
+    "officeHours": "學期間 週一至週五 12:00–13:00"
+  },
+  "social": [
+    {
+      "label": "Instagram",
+      "handle": "@csu._.mis",
+      "url": "https://www.instagram.com/csu._.mis/",
+      "icon": "instagram"
+    }
+  ]
+}

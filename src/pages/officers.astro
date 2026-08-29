@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import OfficerRoster from '../components/OfficerRoster.astro';
+import { CURRENT_TERM, getTerms, termLabel } from '../lib/officers';
+import { useTranslations } from '../i18n';
+
+const t = useTranslations();
+const terms = await getTerms();
+const term = terms.find((entry) => entry.term === CURRENT_TERM);
+
+// 現任屆數由 site.json 的 term 決定；找不到對應檔案就直接讓 build 失敗，
+// 免得換屆時漏建檔案卻默默顯示成舊資料。
+if (!term) {
+  throw new Error(
+    `找不到第 ${CURRENT_TERM} 屆的幹部資料。請建立 src/data/officers/${CURRENT_TERM}.json，` +
+      '或修改 src/data/site.json 的 term。'
+  );
+}
+---
+
+<BaseLayout title={t.officers.title} description={`${termLabel(term.term)}${t.officers.lead}`}>
+  <header class="page-header">
+    <div class="container">
+      <p class="eyebrow">{termLabel(term.term)} · Team</p>
+      <h1>{t.officers.title}</h1>
+      <p class="section-lead">{t.officers.lead}</p>
+    </div>
+  </header>
+
+  <OfficerRoster term={term} terms={terms} />
+</BaseLayout>

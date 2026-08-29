@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AnnouncementIndex from '../../components/AnnouncementIndex.astro';
+import { getPublishedAnnouncements, CATEGORIES } from '../../lib/announcements';
+import { useTranslations } from '../../i18n';
+
+const t = useTranslations();
+const entries = await getPublishedAnnouncements();
+
+const counts = Object.fromEntries(
+  CATEGORIES.map((category) => [
+    category,
+    entries.filter((entry) => entry.data.category === category).length,
+  ])
+);
+---
+
+<BaseLayout title={t.announcements.title} description={t.announcements.lead}>
+  <header class="page-header">
+    <div class="container">
+      <p class="eyebrow">Announcements</p>
+      <h1>{t.announcements.title}</h1>
+      <p class="section-lead">{t.announcements.lead}</p>
+    </div>
+  </header>
+
+  <AnnouncementIndex entries={entries} counts={counts} total={entries.length} />
+</BaseLayout>

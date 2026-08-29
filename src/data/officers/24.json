@@ -1,0 +1,166 @@
+{
+  "term": 24,
+  "years": "2025–2026",
+  "summary": "",
+  "members": [
+    {
+      "id": "president",
+      "name": "羅來恩",
+      "role": "會長",
+      "department": "核心幹部",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "vice-president",
+      "name": "江承翰",
+      "role": "副會長",
+      "department": "核心幹部",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 2
+    },
+    {
+      "id": "advisor",
+      "name": "蕭宇勳",
+      "role": "顧問",
+      "department": "核心幹部",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 3
+    },
+    {
+      "id": "admin",
+      "name": "張家瑜",
+      "role": "行政",
+      "department": "行政組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "admin-intern",
+      "name": "蘇紜暄",
+      "role": "行政",
+      "department": "行政組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 2,
+      "intern": true
+    },
+    {
+      "id": "finance",
+      "name": "傅婉禎",
+      "role": "財務",
+      "department": "財務組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "finance-intern",
+      "name": "李旺鴻",
+      "role": "財務",
+      "department": "財務組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 2,
+      "intern": true
+    },
+    {
+      "id": "activity",
+      "name": "蔡天盛",
+      "role": "活動",
+      "department": "活動組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "pr",
+      "name": "陸駿興",
+      "role": "公關",
+      "department": "公關組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "pr-intern",
+      "name": "吳育瑄",
+      "role": "公關",
+      "department": "公關組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 2,
+      "intern": true
+    },
+    {
+      "id": "design",
+      "name": "徐映筑",
+      "role": "美宣",
+      "department": "美宣組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "design-intern",
+      "name": "莊凈箎",
+      "role": "美宣",
+      "department": "美宣組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 2,
+      "intern": true
+    },
+    {
+      "id": "equipment",
+      "name": "石竣昇",
+      "role": "器機",
+      "department": "器機組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "equip-intern",
+      "name": "蔡侑昕",
+      "role": "器機",
+      "department": "器機組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 2,
+      "intern": true
+    }
+  ]
+}

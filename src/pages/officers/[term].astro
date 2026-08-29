@@ -1,0 +1,49 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import OfficerRoster from '../../components/OfficerRoster.astro';
+import { CURRENT_TERM, getTerms, termLabel, type OfficerTerm } from '../../lib/officers';
+import { useTranslations } from '../../i18n';
+
+/**
+ * 只產生歷屆頁面。現任屆固定住在 /officers，
+ * 不另外產生 /officers/<現任屆>，避免同一份名單有兩個網址。
+ */
+export const getStaticPaths = (async () => {
+  const terms = await getTerms();
+
+  return terms
+    .filter((entry) => entry.term !== CURRENT_TERM)
+    .map((entry) => ({
+      params: { term: String(entry.term) },
+      props: { term: entry, terms },
+    }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  term: OfficerTerm;
+  terms: OfficerTerm[];
+}
+
+const { term, terms } = Astro.props;
+const t = useTranslations();
+
+const heading = `${termLabel(term.term)}${t.officers.title}`;
+---
+
+<BaseLayout
+  title={heading}
+  description={`${termLabel(term.term)}${term.years ? `（${term.years}）` : ''}系學會幹部名單。${term.summary}`}
+>
+  <header class="page-header">
+    <div class="container">
+      <p class="eyebrow">{termLabel(term.term)} · Archive</p>
+      <h1>{heading}</h1>
+      <p class="section-lead">
+        {term.years ? `任期 ${term.years}。` : ''}{t.officers.lead}
+      </p>
+    </div>
+  </header>
+
+  <OfficerRoster term={term} terms={terms} />
+</BaseLayout>

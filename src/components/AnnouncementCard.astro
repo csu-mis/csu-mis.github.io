@@ -1,0 +1,45 @@
+---
+import type { Announcement } from '../lib/announcements';
+import { formatDate, isoDate } from '../lib/announcements';
+import { useTranslations } from '../i18n';
+import Icon from './Icon.astro';
+import { url } from '../lib/url';
+
+interface Props {
+  entry: Announcement;
+  /** compact 用於首頁的精簡卡片 */
+  variant?: 'default' | 'compact';
+}
+
+const { entry, variant = 'default' } = Astro.props;
+const t = useTranslations();
+const { title, date, category, summary, pinned } = entry.data;
+const href = url(`/announcements/${entry.id}`);
+---
+
+<article class:list={['card card--interactive announcement', `announcement--${variant}`]}>
+  <div class="announcement__meta">
+    <span class="tag">{category}</span>
+    {
+      pinned && (
+        <span class="tag tag--accent">
+          <Icon name="pin" size={12} />
+          {t.announcements.pinned}
+        </span>
+      )
+    }
+    <time class="announcement__date" datetime={isoDate(date)}>{formatDate(date)}</time>
+  </div>
+
+  <h3 class="announcement__title">
+    {/* 整張卡片可點擊，但焦點與語意仍在連結上 */}
+    <a href={href} class="announcement__link">{title}</a>
+  </h3>
+
+  <p class="announcement__summary">{summary}</p>
+
+  <span class="announcement__more" aria-hidden="true">
+    {t.announcements.readMore}
+    <Icon name="arrow-right" size={16} />
+  </span>
+</article>

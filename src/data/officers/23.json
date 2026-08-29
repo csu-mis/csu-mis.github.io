@@ -1,0 +1,128 @@
+{
+  "term": 23,
+  "years": "2024–2025",
+  "summary": "",
+  "members": [
+    {
+      "id": "president",
+      "name": "蕭宇勳",
+      "role": "會長",
+      "department": "核心幹部",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "vice-president",
+      "name": "陳泳孜",
+      "role": "副會長",
+      "department": "核心幹部",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 2
+    },
+    {
+      "id": "advisor",
+      "name": "李昀",
+      "role": "顧問",
+      "department": "核心幹部",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 3
+    },
+    {
+      "id": "admin",
+      "name": "李宇姍",
+      "role": "行政",
+      "department": "行政組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "finance",
+      "name": "陳竣翔",
+      "role": "財務",
+      "department": "財務組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "activity-1",
+      "name": "高銓鈞",
+      "role": "活動",
+      "department": "活動組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "activity-2",
+      "name": "羅來恩",
+      "role": "活動",
+      "department": "活動組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 2
+    },
+    {
+      "id": "pr-1",
+      "name": "曾暐宸",
+      "role": "公關",
+      "department": "公關組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "pr-2",
+      "name": "江承翰",
+      "role": "公關",
+      "department": "公關組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 2
+    },
+    {
+      "id": "design",
+      "name": "呂依芩",
+      "role": "美宣",
+      "department": "美宣組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "equipment",
+      "name": "石俊昇",
+      "role": "器機",
+      "department": "器機組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    }
+  ]
+}

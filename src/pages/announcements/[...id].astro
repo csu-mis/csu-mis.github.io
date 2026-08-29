@@ -1,0 +1,137 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import {
+  getChronologicalAnnouncements,
+  formatDate,
+  isoDate,
+  CATEGORY_SLUGS,
+  type Category,
+} from '../../lib/announcements';
+import { url } from '../../lib/url';
+import { useTranslations } from '../../i18n';
+
+export const getStaticPaths = (async () => {
+  const entries = await getChronologicalAnnouncements();
+
+  return entries.map((entry, index) => ({
+    params: { id: entry.id },
+    props: {
+      entry,
+      // 依時間排序，較新的在前，所以「上一則」是索引較小者
+      newer: entries[index - 1] ?? null,
+      older: entries[index + 1] ?? null,
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+// props 型別由上方 getStaticPaths 自動推斷，不需另外宣告 interface Props
+const { entry, newer, older } = Astro.props;
+const { Content, headings } = await render(entry);
+const t = useTranslations();
+const { title, date, updated, category, summary, author, tags, cover } = entry.data;
+const hasToc = headings.filter((h) => h.depth === 2).length >= 3;
+---
+
+<BaseLayout title={title} description={summary} article image={cover}>
+  <article>
+    <header class="post-header">
+      <div class="container container--narrow">
+        <a class="post-back" href={url("/announcements")}>
+          <Icon name="arrow-left" size={16} />
+          {t.announcements.backToList}
+        </a>
+
+        <div class="post-meta">
+          <a class="tag" href={url(`/announcements/category/${CATEGORY_SLUGS[category as Category]}`)}>
+            {category}
+          </a>
+          <time datetime={isoDate(date)}>
+            {t.announcements.publishedOn} {formatDate(date)}
+          </time>
+          {
+            updated && (
+              <time datetime={isoDate(updated)} class="post-meta__updated">
+                {t.announcements.updatedOn} {formatDate(updated)}
+              </time>
+            )
+          }
+        </div>
+
+        <h1 class="post-title">{title}</h1>
+        <p class="post-summary">{summary}</p>
+        <p class="post-author">{t.announcements.author}：{author}</p>
+      </div>
+    </header>
+
+    {
+      cover && (
+        <div class="container container--narrow post-cover">
+          <img src={url(cover)} alt="" loading="eager" />
+        </div>
+      )
+    }
+
+    <div class="container container--narrow post-body">
+      {
+        hasToc && (
+          <nav class="toc" aria-label="本頁目錄">
+            <p class="toc__title">目錄</p>
+            <ol class="toc__list">
+              {headings
+                .filter((h) => h.depth === 2)
+                .map((h) => (
+                  <li>
+                    <a href={`#${h.slug}`}>{h.text}</a>
+                  </li>
+                ))}
+            </ol>
+          </nav>
+        )
+      }
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      {
+        tags.length > 0 && (
+          <ul class="post-tags" aria-label="標籤">
+            {tags.map((tag) => (
+              <li class="tag tag--outline">#{tag}</li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+
+    <nav class="container container--narrow post-nav" aria-label="公告導覽">
+      {
+        newer ? (
+          <a class="post-nav__link" href={url(`/announcements/${newer.id}`)}>
+            <span class="post-nav__label">
+              <Icon name="arrow-left" size={14} />
+              {t.announcements.prev}
+            </span>
+            <span class="post-nav__title">{newer.data.title}</span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        older && (
+          <a class="post-nav__link post-nav__link--next" href={url(`/announcements/${older.id}`)}>
+            <span class="post-nav__label">
+              {t.announcements.next}
+              <Icon name="arrow-right" size={14} />
+            </span>
+            <span class="post-nav__title">{older.data.title}</span>
+          </a>
+        )
+      }
+    </nav>
+  </article>
+</BaseLayout>

@@ -1,0 +1,126 @@
+---
+// 順序即層疊順序：設計權杖與基礎 → 元件 → 頁面。
+// 不用 CSS @import，因為 @import 只能放在檔首，會讓被匯入檔的優先級低於本檔規則。
+import '../styles/global.css';
+import '../styles/components.css';
+import '../styles/pages.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site, pageTitle } from '../lib/site';
+import { useTranslations, defaultLang } from '../i18n';
+import { url } from '../lib/url';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** OG 圖片路徑（相對於 public/），未提供時使用預設 */
+  image?: string;
+  /** 文章型頁面設為 true，OG type 會改成 article */
+  article?: boolean;
+}
+
+const {
+  title,
+  description = site.description,
+  image = '/og-default.svg',
+  article = false,
+} = Astro.props;
+
+const t = useTranslations();
+const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site);
+const ogImage = new URL(url(image), Astro.site);
+const fullTitle = pageTitle(title);
+---
+
+<!doctype html>
+<html lang={defaultLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={url("/favicon.png")} type="image/png" />
+    <link rel="apple-touch-icon" href={url("/apple-touch-icon.png")} />
+    <link rel="sitemap" href={url("/sitemap-index.xml")} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${site.shortName} 公告`}
+      href={new URL(url('/rss.xml'), Astro.site)}
+    />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- 標記 JS 可用；.reveal 的隱藏狀態只在有此 class 時生效 -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+
+    <!-- 字體：先建立連線再載入，減少 render blocking -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="zh_TW" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: site.name,
+        alternateName: site.englishName,
+        url: site.url,
+        email: site.contact.email,
+        parentOrganization: { '@type': 'CollegeOrUniversity', name: site.school },
+        sameAs: site.social.map((s) => s.url),
+      })}
+    />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">{t.nav.skipToContent}</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // 捲動進場效果。無 JS 時內容仍完整顯示（.reveal 預設隱藏僅在 JS 執行後才有意義，
+      // 因此這裡先確認 IntersectionObserver 可用，否則直接標記為可見）。
+      const items = document.querySelectorAll<HTMLElement>('.reveal');
+
+      if (!('IntersectionObserver' in window)) {
+        items.forEach((el) => el.classList.add('is-visible'));
+      } else {
+        // 保險：若 5 秒內仍未觸發（例如瀏覽器直接跳到頁尾），一律顯示
+        window.setTimeout(() => {
+          items.forEach((el) => el.classList.add('is-visible'));
+        }, 5000);
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0.05 }
+        );
+
+        items.forEach((el) => observer.observe(el));
+      }
+    </script>
+  </body>
+</html>

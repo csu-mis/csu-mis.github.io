@@ -1,0 +1,61 @@
+---
+import AnnouncementCard from './AnnouncementCard.astro';
+import Icon from './Icon.astro';
+import { CATEGORIES, CATEGORY_SLUGS, type Announcement, type Category } from '../lib/announcements';
+import { useTranslations } from '../i18n';
+import { url } from '../lib/url';
+
+interface Props {
+  entries: Announcement[];
+  /** undefined 代表「全部」 */
+  activeCategory?: Category;
+  /** 各分類的公告數量，用於顯示在篩選鈕上 */
+  counts: Record<string, number>;
+  total: number;
+}
+
+const { entries, activeCategory, counts, total } = Astro.props;
+const t = useTranslations();
+---
+
+<div class="container section--tight">
+  <nav class="filters" aria-label={t.announcements.filterLabel}>
+    <a
+      href={url("/announcements")}
+      class:list={['filters__item', { 'is-active': !activeCategory }]}
+      aria-current={!activeCategory ? 'page' : undefined}
+    >
+      {t.announcements.all}
+      <span class="filters__count">{total}</span>
+    </a>
+    {
+      CATEGORIES.map((category) => (
+        <a
+          href={url(`/announcements/category/${CATEGORY_SLUGS[category]}`)}
+          class:list={['filters__item', { 'is-active': activeCategory === category }]}
+          aria-current={activeCategory === category ? 'page' : undefined}
+        >
+          {category}
+          <span class="filters__count">{counts[category] ?? 0}</span>
+        </a>
+      ))
+    }
+
+    <a class="filters__rss" href={url("/rss.xml")}>
+      <Icon name="rss" size={15} />
+      {t.announcements.rss}
+    </a>
+  </nav>
+
+  {
+    entries.length > 0 ? (
+      <div class="grid grid--3 announcements-grid">
+        {entries.map((entry) => (
+          <AnnouncementCard entry={entry} />
+        ))}
+      </div>
+    ) : (
+      <p class="empty">{t.announcements.empty}</p>
+    )
+  }
+</div>

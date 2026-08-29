@@ -1,0 +1,59 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import AnnouncementIndex from '../../../components/AnnouncementIndex.astro';
+import {
+  getPublishedAnnouncements,
+  CATEGORIES,
+  CATEGORY_SLUGS,
+  type Category,
+} from '../../../lib/announcements';
+import { useTranslations } from '../../../i18n';
+
+export const getStaticPaths = (async () => {
+  const entries = await getPublishedAnnouncements();
+  const counts = Object.fromEntries(
+    CATEGORIES.map((c) => [c, entries.filter((e) => e.data.category === c).length])
+  );
+
+  return CATEGORIES.map((category) => ({
+    params: { category: CATEGORY_SLUGS[category] },
+    props: {
+      category,
+      entries: entries.filter((entry) => entry.data.category === category),
+      total: entries.length,
+      counts,
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  category: Category;
+  entries: Awaited<ReturnType<typeof getPublishedAnnouncements>>;
+  total: number;
+  counts: Record<string, number>;
+}
+
+const { category, entries, total, counts } = Astro.props;
+const t = useTranslations();
+---
+
+<BaseLayout
+  title={`${category}公告`}
+  description={`${t.announcements.lead}目前顯示分類：${category}。`}
+>
+  <header class="page-header">
+    <div class="container">
+      <p class="eyebrow">Announcements</p>
+      <h1>{category}</h1>
+      <p class="section-lead">{t.announcements.lead}</p>
+    </div>
+  </header>
+
+  <AnnouncementIndex
+    entries={entries}
+    activeCategory={category}
+    counts={counts}
+    total={total}
+  />
+</BaseLayout>

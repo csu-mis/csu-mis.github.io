@@ -1,0 +1,24 @@
+{
+  "highlights": [
+    {
+      "icon": "calendar",
+      "title": "系上活動",
+      "description": "迎新宿營、系烤、系遊、送舊——把四年大學生活變成值得記住的事。"
+    },
+    {
+      "icon": "book",
+      "title": "課業資源",
+      "description": "整理課程資訊、考古題與證照講座，讓學習不必自己一個人摸索。"
+    },
+    {
+      "icon": "megaphone",
+      "title": "資訊傳遞",
+      "description": "系辦公告、獎助學金、實習與競賽消息，統一在官網與社群同步發布。"
+    },
+    {
+      "icon": "users",
+      "title": "系上服務",
+      "description": "代表同學向系上反映需求，維護系學會空間與公共資源。"
+    }
+  ]
+}

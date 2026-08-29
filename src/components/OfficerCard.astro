@@ -1,0 +1,74 @@
+---
+import { avatarUrl, type Officer } from '../lib/officers';
+import { useTranslations } from '../i18n';
+import Icon from './Icon.astro';
+
+interface Props {
+  officer: Officer;
+  /** 核心幹部用的強調樣式（頭貼較大、卡片邊框較明顯） */
+  featured?: boolean;
+}
+
+const { officer, featured = false } = Astro.props;
+const t = useTranslations();
+
+/** 沒有頭貼也沒有 Gravatar 時，用姓名最後一個字做為文字頭像 */
+const initial = officer.name.slice(-1);
+
+/** 本機圖片優先，其次 Gravatar；兩者都沒有才回傳空字串 */
+const avatar = avatarUrl(officer, 128);
+const avatar2x = avatarUrl(officer, 256);
+
+/** instagram 欄位允許填 @帳號、帳號或完整網址，這裡統一成連結與顯示文字 */
+const igHandle = officer.instagram.trim().replace(/^https?:\/\/(www\.)?instagram\.com\//, '').replace(/^@/, '').replace(/\/$/, '');
+const igUrl = officer.instagram.trim().startsWith('http')
+  ? officer.instagram.trim()
+  : `https://www.instagram.com/${igHandle}`;
+---
+
+<article class:list={['card', 'officer', { 'officer--featured': featured }]}>
+  <div class="officer__avatar">
+    {
+      avatar ? (
+        <img
+          src={avatar}
+          srcset={avatar === avatar2x ? undefined : `${avatar} 1x, ${avatar2x} 2x`}
+          alt={`${officer.name} 的照片`}
+          loading="lazy"
+          decoding="async"
+          referrerpolicy="no-referrer"
+          width="96"
+          height="96"
+        />
+      ) : (
+        <span aria-hidden="true">{initial}</span>
+      )
+    }
+  </div>
+
+  <h3 class="officer__name">{officer.name}</h3>
+
+  <p class="officer__role">
+    {officer.role}
+    {officer.intern && <span class="officer__intern">{t.officers.internBadge}</span>}
+  </p>
+
+  {officer.grade && <p class="officer__grade">{officer.grade}</p>}
+
+  {officer.bio && <p class="officer__bio">{officer.bio}</p>}
+
+  {
+    igHandle && (
+      <a
+        class="officer__link"
+        href={igUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Icon name="instagram" size={16} />
+        <span>{`@${igHandle}`}</span>
+        <span class="visually-hidden">{t.common.externalLink}</span>
+      </a>
+    )
+  }
+</article>

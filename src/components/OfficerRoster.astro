@@ -1,0 +1,112 @@
+---
+import OfficerCard from './OfficerCard.astro';
+import TermSwitcher from './TermSwitcher.astro';
+import Icon from './Icon.astro';
+import {
+  CURRENT_TERM,
+  getAdjacentTerms,
+  getDepartmentGroups,
+  termLabel,
+  termPath,
+  type OfficerTerm,
+} from '../lib/officers';
+import { url } from '../lib/url';
+import { useTranslations } from '../i18n';
+
+interface Props {
+  /** 要顯示的那一屆 */
+  term: OfficerTerm;
+  /** 全部屆數（由新到舊），供切換器與上下屆導覽使用 */
+  terms: OfficerTerm[];
+}
+
+const { term, terms } = Astro.props;
+const t = useTranslations();
+
+const groups = await getDepartmentGroups(term);
+const { older, newer } = getAdjacentTerms(terms, term.term);
+const isCurrent = term.term === CURRENT_TERM;
+---
+
+<div class="container section--tight">
+  <TermSwitcher terms={terms} active={term.term} />
+
+  {
+    !isCurrent && (
+      <aside class="term-notice">
+        <Icon name="history" size={18} class="term-notice__icon" />
+        <p class="term-notice__text">
+          <strong class="term-notice__term">
+            {`${termLabel(term.term)}${term.years ? `（${term.years}）` : ''}`}
+          </strong>
+          {t.officers.archiveNotice}
+        </p>
+        <a class="button button--secondary term-notice__cta" href={url("/officers")}>
+          {t.officers.backToCurrent}
+        </a>
+      </aside>
+    )
+  }
+
+  <div class="roster__meta">
+    {term.summary && <p class="roster__summary">{term.summary}</p>}
+    <p class="roster__stats">
+      <span>{`${term.members.length} ${t.officers.memberCount}`}</span>
+      <span aria-hidden="true">·</span>
+      <span>{`${groups.length} ${t.officers.departmentCount}`}</span>
+    </p>
+  </div>
+
+  {
+    groups.length > 0 ? (
+      groups.map((group, index) => (
+        <section class="dept reveal" aria-labelledby={`dept-${index}`}>
+          <div class="dept__head">
+            <h2 id={`dept-${index}`} class="dept__name">
+              {group.name}
+            </h2>
+            {group.description && <p class="dept__desc">{group.description}</p>}
+            <span class="dept__count">{group.members.length} 位</span>
+          </div>
+
+          <div class="grid officers-grid">
+            {group.members.map((officer) => (
+              <OfficerCard officer={officer} featured={index === 0} />
+            ))}
+          </div>
+        </section>
+      ))
+    ) : (
+      <p class="empty">{isCurrent ? t.officers.empty : t.officers.termEmpty}</p>
+    )
+  }
+
+  {
+    (older || newer) && (
+      <nav class="post-nav term-nav" aria-label={t.officers.termSwitchLabel}>
+        {older ? (
+          <a class="post-nav__link" href={termPath(older.term)}>
+            <span class="post-nav__label">
+              <Icon name="arrow-left" size={14} />
+              {t.officers.prevTerm}
+            </span>
+            <span class="post-nav__title">{termLabel(older.term)}</span>
+            {older.years && <span class="term-nav__years">{older.years}</span>}
+          </a>
+        ) : (
+          <span />
+        )}
+        {newer && (
+          <a class="post-nav__link post-nav__link--next" href={termPath(newer.term)}>
+            <span class="post-nav__label">
+              {t.officers.nextTerm}
+              <Icon name="arrow-right" size={14} />
+            </span>
+            <span class="post-nav__title">{termLabel(newer.term)}</span>
+            {newer.years && <span class="term-nav__years">{newer.years}</span>}
+          </a>
+        )}
+      </nav>
+    )
+  }
+</div>

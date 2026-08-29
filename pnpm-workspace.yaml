@@ -1,0 +1,4 @@
+# pnpm 11 需要明確授權相依套件執行安裝腳本。
+# esbuild 是 Astro/Vite 的建置依賴，必須允許。
+allowBuilds:
+  esbuild: true

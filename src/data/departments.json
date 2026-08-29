@@ -1,0 +1,9 @@
+[
+  { "name": "核心幹部", "description": "統籌會務與對外代表系學會。", "order": 1 },
+  { "name": "行政組", "description": "會議記錄、公文往來與檔案管理。", "order": 2 },
+  { "name": "財務組", "description": "系費與活動預算的收支管理。", "order": 3 },
+  { "name": "活動組", "description": "規劃並執行系上各項活動。", "order": 4 },
+  { "name": "公關組", "description": "對外聯繫、贊助洽談與跨系交流。", "order": 5 },
+  { "name": "美宣組", "description": "視覺設計、社群圖文與周邊製作。", "order": 6 },
+  { "name": "器機組", "description": "活動器材、場地與機動支援。", "order": 7 }
+]

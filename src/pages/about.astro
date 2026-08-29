@@ -1,0 +1,159 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { site, about } from '../lib/site';
+import { useTranslations } from '../i18n';
+import { url } from '../lib/url';
+
+const t = useTranslations();
+
+const departments = (await getCollection('departments')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+type SocialIcon = 'instagram' | 'facebook' | 'threads' | 'github';
+---
+
+<BaseLayout title={t.about.title} description={about.mission.slice(0, 150)}>
+  <header class="page-header">
+    <div class="container">
+      <p class="eyebrow">About us</p>
+      <h1>{t.about.title}</h1>
+      <p class="section-lead">{t.about.lead}</p>
+    </div>
+  </header>
+
+  <!-- 使命 -->
+  <section class="section--tight" aria-labelledby="mission">
+    <div class="container">
+      <div class="mission reveal">
+        <div class="mission__label">
+          <Icon name="target" size={22} />
+          <h2 id="mission">{t.about.missionTitle}</h2>
+        </div>
+        <p class="mission__text">{about.mission}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 組織架構 -->
+  <section class="section--tight structure" aria-labelledby="structure">
+    <div class="container">
+      <p class="eyebrow">Structure</p>
+      <h2 id="structure" class="section-title">{t.about.structureTitle}</h2>
+
+      <div class="table-scroll reveal">
+        <table class="structure__table">
+          <caption class="visually-hidden">系學會各部門與職掌對照表</caption>
+          <thead>
+            <tr>
+              <th scope="col">部門</th>
+              <th scope="col">職掌</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              departments.map((dept) => (
+                <tr>
+                  <th scope="row">{dept.data.name}</th>
+                  <td>{dept.data.description}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <a class="button button--secondary structure__cta" href={url("/officers")}>
+        {t.nav.officers}
+        <Icon name="arrow-right" size={18} />
+      </a>
+    </div>
+  </section>
+
+  <!-- 沿革 -->
+  <section class="section--tight" aria-labelledby="history">
+    <div class="container">
+      <p class="eyebrow">History</p>
+      <h2 id="history" class="section-title">{t.about.historyTitle}</h2>
+
+      <ol class="timeline reveal">
+        {
+          about.history.map((item) => (
+            <li class="timeline__item">
+              <span class="timeline__year">{item.year}</span>
+              <div class="timeline__body">
+                <h3 class="timeline__title">{item.title}</h3>
+                <p class="timeline__desc">{item.description}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- 常見問題 -->
+  <section class="section--tight" aria-labelledby="faq">
+    <div class="container">
+      <p class="eyebrow">FAQ</p>
+      <h2 id="faq" class="section-title">常見問題</h2>
+
+      <div class="faq reveal">
+        {
+          about.faq.map((item, index) => (
+            <details class="faq__item" open={index === 0}>
+              <summary class="faq__question">
+                <Icon name="help-circle" size={18} />
+                {item.question}
+              </summary>
+              <p class="faq__answer">{item.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 聯絡 -->
+  <section class="section--tight" id="contact" aria-labelledby="contact-heading">
+    <div class="container">
+      <div class="contact reveal">
+        <div class="contact__intro">
+          <p class="eyebrow">Contact</p>
+          <h2 id="contact-heading" class="section-title">{t.about.contactTitle}</h2>
+          <p class="section-lead">{site.name}</p>
+        </div>
+
+        <dl class="contact__list">
+          <div class="contact__row">
+            <dt><Icon name="mail" size={16} />{t.about.emailLabel}</dt>
+            <dd><a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></dd>
+          </div>
+          <div class="contact__row">
+            <dt><Icon name="map-pin" size={16} />{t.about.officeLabel}</dt>
+            <dd>{site.contact.office}</dd>
+          </div>
+          <div class="contact__row">
+            <dt><Icon name="clock" size={16} />{t.about.officeHoursLabel}</dt>
+            <dd>{site.contact.officeHours}</dd>
+          </div>
+          <div class="contact__row">
+            <dt><Icon name="sparkles" size={16} />{t.about.socialLabel}</dt>
+            <dd class="contact__social">
+              {
+                site.social.map((item) => (
+                  <a href={item.url} target="_blank" rel="noopener noreferrer">
+                    <Icon name={item.icon as SocialIcon} size={16} />
+                    {item.label}
+                  </a>
+                ))
+              }
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

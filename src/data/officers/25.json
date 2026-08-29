@@ -1,0 +1,139 @@
+{
+  "term": 25,
+  "years": "2026–2027",
+  "summary": "",
+  "members": [
+    {
+      "id": "president",
+      "name": "江承翰",
+      "role": "會長",
+      "department": "核心幹部",
+      "grade": "資管四甲",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "vice-president",
+      "name": "羅來恩",
+      "role": "副會長",
+      "department": "核心幹部",
+      "grade": "資管四甲",
+      "instagram": "elvis._.lo",
+      "email": "me@elvislo.tw",
+      "photo": "",
+      "order": 2
+    },
+    {
+      "id": "secretary",
+      "name": "張家瑜",
+      "role": "執行秘書",
+      "department": "核心幹部",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 3
+    },
+    {
+      "id": "advisor",
+      "name": "傅婉禎",
+      "role": "顧問",
+      "department": "核心幹部",
+      "grade": "資管四甲",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 4
+    },
+    {
+      "id": "admin",
+      "name": "蘇紘暄",
+      "role": "行政",
+      "department": "行政組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "finance",
+      "name": "李旺鴻",
+      "role": "財務",
+      "department": "財務組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "activity",
+      "name": "蔡天盛",
+      "role": "活動",
+      "department": "活動組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "pr",
+      "name": "劉學致",
+      "role": "公關",
+      "department": "公關組",
+      "grade": "資管四甲",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "pr-deputy",
+      "name": "陸駿興",
+      "role": "副公關",
+      "department": "公關組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 2
+    },
+    {
+      "id": "design",
+      "name": "莊淨蓂",
+      "role": "美宣",
+      "department": "美宣組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    },
+    {
+      "id": "design-deputy",
+      "name": "吳育瑄",
+      "role": "副美宣",
+      "department": "美宣組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 2
+    },
+    {
+      "id": "equipment",
+      "name": "蔡侑昕",
+      "role": "器機",
+      "department": "器機組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 1
+    }
+  ]
+}
