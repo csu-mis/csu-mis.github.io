@@ -87,7 +87,6 @@
 .hero__accent {
   display: block;
   color: color-mix(in srgb, var(--color-accent) 62%, #ffffff);
-  font-style: italic;
 }
 
 .hero__lead {
