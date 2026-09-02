@@ -20,6 +20,12 @@
       "handle": "@csu._.mis",
       "url": "https://www.instagram.com/csu._.mis/",
       "icon": "instagram"
+    },
+    {
+      "label": "GitHub",
+      "handle": "csu-mis",
+      "url": "https://github.com/csu-mis",
+      "icon": "github"
     }
   ]
 }

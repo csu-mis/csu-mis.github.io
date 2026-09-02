@@ -18,6 +18,7 @@
 | 系學會名稱、屆數、Email、辦公室、社群連結 | `src/data/site.json` |
 | 首頁的「我們在做什麼」四張卡 | `src/data/home.json` |
 | 關於頁的使命、沿革、常見問題 | `src/data/about.json` |
+| 行事曆嵌入的 Google 日曆 | `src/data/calendar.json` |
 | 網頁上的按鈕文字、標題、提示語 | `src/i18n/zh-TW.json` |
 | 顏色、字體、間距 | `src/styles/global.css` 最上方的「設計權杖」區塊 |
 | 網站 logo | 換掉 `public/logo.png`（同時換 `favicon.png`、`apple-touch-icon.png`）|
@@ -252,6 +253,7 @@ src/
    ├─ officers.astro                    → /officers（現任那一屆）
    ├─ officers/[term].astro             → /officers/24 等歷屆頁
    ├─ about.astro                       → /about
+   ├─ calendar.astro                    → /calendar
    ├─ 404.astro                         → 找不到頁面時
    └─ rss.xml.ts                        → /rss.xml
 ```

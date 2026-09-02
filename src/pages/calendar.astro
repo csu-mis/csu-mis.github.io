@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { calendar } from '../lib/site';
+import { useTranslations } from '../i18n';
+
+const t = useTranslations();
+
+const embedParams = new URLSearchParams({
+  src: calendar.src,
+  ctz: calendar.timezone,
+  hl: calendar.language,
+});
+
+const desktopSrc = `https://calendar.google.com/calendar/embed?${embedParams}`;
+
+const mobileParams = new URLSearchParams(embedParams);
+mobileParams.set('mode', 'AGENDA');
+const mobileSrc = `https://calendar.google.com/calendar/embed?${mobileParams}`;
+---
+
+<BaseLayout title={t.calendar.title} description={t.calendar.lead}>
+  <header class="page-header">
+    <div class="container">
+      <p class="eyebrow">Calendar</p>
+      <h1>{t.calendar.title}</h1>
+      <p class="section-lead">{t.calendar.lead}</p>
+    </div>
+  </header>
+
+  <section class="section--tight calendar-embed" aria-label={t.calendar.iframeTitle}>
+    <div class="container">
+      <!-- 桌機月檢視；窄螢幕改顯示議程檢視，避免 Google 月曆嵌入在手機上擠成無法點的格子 -->
+      <div class="calendar-embed__frame calendar-embed__frame--desktop">
+        <iframe src={desktopSrc} title={t.calendar.iframeTitle}></iframe>
+      </div>
+      <div class="calendar-embed__frame calendar-embed__frame--mobile">
+        <iframe src={mobileSrc} title={t.calendar.iframeTitle} loading="lazy"></iframe>
+      </div>
+
+      <p class="calendar-embed__open">
+        <a href={desktopSrc} target="_blank" rel="noopener noreferrer">
+          {t.calendar.openInGoogle}
+          <span class="visually-hidden">{t.common.externalLink}</span>
+        </a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

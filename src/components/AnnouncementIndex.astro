@@ -18,34 +18,53 @@ const { entries, activeCategory, counts, total } = Astro.props;
 const t = useTranslations();
 ---
 
-<div class="container section--tight">
-  <nav class="filters" aria-label={t.announcements.filterLabel}>
-    <a
-      href={url("/announcements")}
-      class:list={['filters__item', { 'is-active': !activeCategory }]}
-      aria-current={!activeCategory ? 'page' : undefined}
-    >
-      {t.announcements.all}
-      <span class="filters__count">{total}</span>
-    </a>
-    {
-      CATEGORIES.map((category) => (
-        <a
-          href={url(`/announcements/category/${CATEGORY_SLUGS[category]}`)}
-          class:list={['filters__item', { 'is-active': activeCategory === category }]}
-          aria-current={activeCategory === category ? 'page' : undefined}
-        >
-          {category}
-          <span class="filters__count">{counts[category] ?? 0}</span>
-        </a>
-      ))
-    }
+<div class="container section--tight chip-bar-page">
+  <nav class="chip-bar" aria-label={t.announcements.filterLabel}>
+    <p class="chip-bar__label" id="announcement-filter-label">
+      <Icon name="filter" size={16} />
+      {t.announcements.categoryFieldLabel}
+    </p>
 
-    <a class="filters__rss" href={url("/rss.xml")}>
+    <div class="chip-bar__scroller">
+      <ul class="chip-bar__list" aria-labelledby="announcement-filter-label">
+        <li>
+          <a
+            href={url("/announcements")}
+            class:list={['chip-bar__item', { 'is-active': !activeCategory }]}
+            aria-current={!activeCategory ? 'page' : undefined}
+          >
+            {t.announcements.all}
+            <span class="chip-bar__count">{total}</span>
+          </a>
+        </li>
+        {
+          CATEGORIES.map((category) => (
+            <li>
+              <a
+                href={url(`/announcements/category/${CATEGORY_SLUGS[category]}`)}
+                class:list={['chip-bar__item', { 'is-active': activeCategory === category }]}
+                aria-current={activeCategory === category ? 'page' : undefined}
+              >
+                {category}
+                <span class="chip-bar__count">{counts[category] ?? 0}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <a class="chip-bar__action" href={url("/rss.xml")}>
       <Icon name="rss" size={15} />
       {t.announcements.rss}
     </a>
   </nav>
+
+  <script>
+    // 窄螢幕膠囊列會橫滑；進頁時把目前選取項捲進可視範圍
+    const active = document.querySelector<HTMLElement>('.chip-bar .is-active');
+    active?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'instant' });
+  </script>
 
   {
     entries.length > 0 ? (

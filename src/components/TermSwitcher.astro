@@ -15,29 +15,37 @@ const t = useTranslations();
 
 {
   terms.length > 1 && (
-    <nav class="term-switcher" aria-label={t.officers.termSwitchLabel}>
-      <p class="term-switcher__label" id="term-switcher-label">
+    <nav class="chip-bar" aria-label={t.officers.termSwitchLabel}>
+      <p class="chip-bar__label" id="term-switcher-label">
         <Icon name="history" size={16} />
         {t.officers.termFieldLabel}
       </p>
 
-      <ul class="term-switcher__list" aria-labelledby="term-switcher-label">
-        {terms.map((entry) => (
-          <li>
-            <a
-              href={termPath(entry.term)}
-              class:list={['term-switcher__item', { 'is-active': entry.term === active }]}
-              aria-current={entry.term === active ? 'page' : undefined}
-            >
-              <span class="term-switcher__term">{termLabel(entry.term)}</span>
-              {entry.years && <span class="term-switcher__years">{entry.years}</span>}
-              {entry.term === CURRENT_TERM && (
-                <span class="term-switcher__badge">{t.officers.currentBadge}</span>
-              )}
-            </a>
-          </li>
-        ))}
-      </ul>
+      <div class="chip-bar__scroller">
+        <ul class="chip-bar__list" aria-labelledby="term-switcher-label">
+          {terms.map((entry) => (
+            <li>
+              <a
+                href={termPath(entry.term)}
+                class:list={['chip-bar__item', { 'is-active': entry.term === active }]}
+                aria-current={entry.term === active ? 'page' : undefined}
+              >
+                <span class="chip-bar__term">{termLabel(entry.term)}</span>
+                {entry.years && <span class="chip-bar__years">{entry.years}</span>}
+                {entry.term === CURRENT_TERM && (
+                  <span class="chip-bar__badge">{t.officers.currentBadge}</span>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </nav>
   )
 }
+
+<script>
+  // 窄螢幕膠囊列會橫滑；進頁時把目前選取項捲進可視範圍
+  const active = document.querySelector<HTMLElement>('.chip-bar .is-active');
+  active?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'instant' });
+</script>

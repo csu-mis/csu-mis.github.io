@@ -114,8 +114,19 @@
       "order": 1
     },
     {
+      "id": "design",
+      "name": "徐映筑",
+      "role": "攝影",
+      "department": "美宣組",
+      "grade": "",
+      "instagram": "",
+      "email": "",
+      "photo": "",
+      "order": 2
+    },
+    {
       "id": "equipment",
-      "name": "石俊昇",
+      "name": "石竣昇",
       "role": "器機",
       "department": "器機組",
       "grade": "",
