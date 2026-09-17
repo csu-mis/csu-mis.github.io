@@ -15,7 +15,7 @@ const { entry } = Astro.props;
 const t = useTranslations();
 const title = `${entry.data.title}${t.documents.history}`;
 const fallback = documentSource(entry.data.sourcePath, entry.data.sourceCommit, true);
-const paths = documentHistoryPaths(entry.id);
+const paths = documentHistoryPaths(entry.id, entry.data.sourcePath);
 ---
 <BaseLayout title={title} description={t.documents.historyLead}>
   <div class="container document-shell">

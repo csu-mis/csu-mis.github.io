@@ -299,9 +299,8 @@ src/
 文件正文的唯一來源是 GitHub 的 csu-mis/Association-documents（main 分支）。不接受本機文件庫路徑，也不把正文提交到網站儲存庫。
 
 - 網址：`/documents` 為總覽，`/documents/<id>` 為共用閱讀頁，`/documents/<id>/history` 為修訂紀錄。開啟修訂頁時會向 GitHub 讀取該文件的 commit，而不是把訪客送到 GitHub。
-- `src/data/documents.json` 只管理顯示名稱、簡介、分類、來源路徑與穩定網址；正文一律由 GitHub 讀取。
-- 清單中尚未推送到 GitHub 的文件不顯示；文件推送後會自動出現。章程支援舊檔名 `rules.md`，新檔名 `組織章程.md` 優先。
-- 新增清單外的文件時，先在清單設定其 id 與 sourcePath，再把正文推送到文件庫。README 與修訂對照表不自動公開為閱讀頁。
+- 部署份數以 GitHub 文件庫為準：`組織章程.md`（或舊檔名 `rules.md`）、`辦法/*.md`、`作業規範/*.md` 有幾份就公開幾份。README 與 `修訂說明/` 不公開為閱讀頁。
+- `src/data/documents.json` 只覆寫顯示名稱、簡介與穩定網址；沒寫進清單的新文件仍會自動出現。正文一律由 GitHub 讀取。
 
 ### 自動更新
 

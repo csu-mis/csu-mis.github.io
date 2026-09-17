@@ -21,20 +21,69 @@ export async function resolveCommit(request = fetch) {
   return commit.sha;
 }
 
-export function selectDocuments(paths, manifest) {
-  const files = manifest.flatMap((entry) => {
-    const sourcePath = [entry.sourcePath, ...(entry.aliases ?? [])].find((path) => paths.includes(path));
-    return sourcePath ? [{ ...entry, sourcePath }] : [];
+export function documentCategory(path) {
+  if (path === '組織章程.md' || path === 'rules.md') return '章程';
+  if (path.startsWith('辦法/') && path.endsWith('.md') && path.split('/').length === 2) return '辦法';
+  if (path.startsWith('作業規範/') && path.endsWith('.md') && path.split('/').length === 2) return '作業規範';
+}
+
+export function fallbackId(sourcePath) {
+  const base = sourcePath.replace(/\.md$/i, '').split('/').pop() ?? '';
+  if (/^[a-z0-9-]+$/i.test(base)) return base.toLowerCase();
+  return `d-${createHash('sha256').update(sourcePath).digest('hex').slice(0, 12)}`;
+}
+
+export function excerpt(body) {
+  const para = body.split(/\r?\n/).map((line) => line.trim()).filter((line) => line && !line.startsWith('#') && !line.startsWith('>'))
+    .join('\n').split(/\n\n+/)[0]?.replace(/[*_`]/g, '').replace(/\s+/g, ' ').trim() ?? '';
+  return para.slice(0, 160) || '本會法規與作業說明。';
+}
+
+export function selectDocuments(paths, manifest = []) {
+  const available = new Set(paths);
+  const charterPath = available.has('組織章程.md') ? '組織章程.md' : available.has('rules.md') ? 'rules.md' : null;
+  const files = [];
+  for (const path of [charterPath, ...paths].filter(Boolean)) {
+    const category = documentCategory(path);
+    if (!category || files.some((entry) => entry.sourcePath === path)) continue;
+    if (category === '章程' && path !== charterPath) continue;
+    const overlay = manifest.find((entry) => [entry.sourcePath, ...(entry.aliases ?? [])].includes(path)) ?? {};
+    files.push({
+      id: overlay.id || (category === '章程' ? 'rules' : fallbackId(path)),
+      title: overlay.title || path.replace(/\.md$/i, '').split('/').pop(),
+      summary: overlay.summary || '',
+      category: overlay.category || category,
+      sourcePath: path,
+      aliases: overlay.aliases,
+    });
+  }
+  if (!files.some((entry) => entry.category === '章程')) throw new Error('GitHub 文件庫缺少組織章程，停止同步');
+  const rank = { 章程: 0, 辦法: 1, 作業規範: 2 };
+  return files.sort((a, b) => {
+    const byCategory = rank[a.category] - rank[b.category];
+    if (byCategory) return byCategory;
+    const aIndex = manifest.findIndex((entry) => entry.id === a.id);
+    const bIndex = manifest.findIndex((entry) => entry.id === b.id);
+    if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+    if (aIndex !== -1) return -1;
+    if (bIndex !== -1) return 1;
+    return a.title.localeCompare(b.title, 'zh-Hant');
   });
-  if (!files.some(({ id }) => id === 'rules')) throw new Error('GitHub 文件庫缺少組織章程，停止同步');
-  return files;
 }
 
 export function makeSnapshot(entry, source, sourceCommit, order) {
   const heading = source.match(/^# (.+)\r?\n/);
   if (!heading) throw new Error(`${entry.sourcePath} 缺少文件標題`);
   const { id, aliases, ...metadata } = entry;
-  const data = { ...metadata, fullTitle: heading[1], order, sourceCommit, sourceHash: createHash('sha256').update(source).digest('hex') };
+  const data = {
+    ...metadata,
+    title: metadata.title || heading[1],
+    summary: metadata.summary || excerpt(source.slice(heading[0].length)),
+    fullTitle: heading[1],
+    order,
+    sourceCommit,
+    sourceHash: createHash('sha256').update(source).digest('hex'),
+  };
   const frontmatter = Object.entries(data).map(([key, value]) => `${key}: ${JSON.stringify(value)}`).join('\n');
   return `---\n${frontmatter}\n---\n${source.slice(heading[0].length)}`;
 }

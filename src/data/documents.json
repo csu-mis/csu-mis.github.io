@@ -92,5 +92,40 @@
     "summary": "活動風險與突發事件的應對指引。",
     "category": "作業規範",
     "sourcePath": "作業規範/活動安全計畫指引.md"
+  },
+  {
+    "id": "borrowing",
+    "title": "器材與場地借用流程",
+    "summary": "向學生會借器材、借用教室與場地的步驟。",
+    "category": "作業規範",
+    "sourcePath": "作業規範/器材與場地借用流程.md"
+  },
+  {
+    "id": "minutes",
+    "title": "會議文書作業規範",
+    "summary": "開會通知、發文字號、簽到與會議紀錄的辦理方式。",
+    "category": "作業規範",
+    "sourcePath": "作業規範/會議文書作業規範.md"
+  },
+  {
+    "id": "dues",
+    "title": "會費收取作業規範",
+    "summary": "會費金額、收費方式與退費注意事項。",
+    "category": "作業規範",
+    "sourcePath": "作業規範/會費收取作業規範.md"
+  },
+  {
+    "id": "club-class",
+    "title": "社課辦理流程",
+    "summary": "社課規劃、場地、活動系統與時數發放流程。",
+    "category": "作業規範",
+    "sourcePath": "作業規範/社課辦理流程.md"
+  },
+  {
+    "id": "design",
+    "title": "美宣作業規範",
+    "summary": "美宣時程、貼文格式與輸出規格。",
+    "category": "作業規範",
+    "sourcePath": "作業規範/美宣作業規範.md"
   }
 ]

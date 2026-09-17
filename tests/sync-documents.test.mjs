@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { selectDocuments, makeSnapshot, shouldBuild, resolveCommit } from '../scripts/sync-documents.mjs';
 const manifest = [{ id: 'rules', title: '組織章程', category: '章程', summary: '章程', sourcePath: '組織章程.md', aliases: ['rules.md'] }, { id: 'finance', title: '財務管理辦法', category: '辦法', summary: '財務', sourcePath: '辦法/財務管理辦法.md' }];
 const sha = 'a'.repeat(40);
@@ -7,9 +8,15 @@ test('GitHub 舊章程與未推送文件：只選 GitHub 實際存在的檔案',
   const files = selectDocuments(['Readme.md','rules.md'], manifest);
   assert.deepEqual(files.map(({id, sourcePath}) => ({id,sourcePath})), [{id:'rules',sourcePath:'rules.md'}]);
 });
-test('新檔案推送後加入，章程優先使用新檔名', () => {
-  const files = selectDocuments(['rules.md','組織章程.md','辦法/財務管理辦法.md','修訂說明/草案.md'], manifest);
-  assert.deepEqual(files.map(x=>x.sourcePath), ['組織章程.md','辦法/財務管理辦法.md']);
+test('GitHub 有的辦法與作業規範都會部署，README 與修訂說明除外', () => {
+  const files = selectDocuments(['rules.md','組織章程.md','辦法/財務管理辦法.md','作業規範/社課辦理流程.md','修訂說明/草案.md','Readme.md'], manifest);
+  assert.deepEqual(files.map((entry) => entry.sourcePath), ['組織章程.md','辦法/財務管理辦法.md','作業規範/社課辦理流程.md']);
+  assert.equal(files.find((entry) => entry.sourcePath === '作業規範/社課辦理流程.md').id, `d-${createHash('sha256').update('作業規範/社課辦理流程.md').digest('hex').slice(0, 12)}`);
+});
+test('清單只覆寫顯示資料，不擋 GitHub 既有文件', () => {
+  const files = selectDocuments(['組織章程.md','作業規範/社課辦理流程.md'], []);
+  assert.equal(files.find((entry) => entry.category === '章程').id, 'rules');
+  assert.ok(files.some((entry) => entry.sourcePath === '作業規範/社課辦理流程.md'));
 });
 test('沒有章程時停止，避免部署空的組織章程頁', () => {
   assert.throws(()=>selectDocuments(['Readme.md'],manifest), /章程/);
