@@ -5,12 +5,14 @@
   "type": "module",
   "packageManager": "pnpm@11.22.0",
   "scripts": {
-    "dev": "SHOW_DRAFTS=1 astro dev",
-    "start": "SHOW_DRAFTS=1 astro dev",
-    "build": "astro build",
+    "dev": "node scripts/sync-documents.mjs && SHOW_DRAFTS=1 astro dev",
+    "start": "node scripts/sync-documents.mjs && SHOW_DRAFTS=1 astro dev",
+    "build": "node scripts/sync-documents.mjs && astro build",
     "preview": "astro preview",
-    "check": "astro check",
-    "astro": "astro"
+    "check": "node scripts/sync-documents.mjs && astro check",
+    "astro": "astro",
+    "sync:documents": "node scripts/sync-documents.mjs",
+    "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

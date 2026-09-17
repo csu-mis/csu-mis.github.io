@@ -21,3 +21,8 @@ node_modules/
 .vscode/
 .idea/
 *.log
+
+# GitHub 文件的衍生快取，禁止作為第二份來源提交
+src/content/documents/
+src/content/.documents-*/
+public/document-version.json

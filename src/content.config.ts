@@ -84,4 +84,18 @@ const departments = defineCollection({
   }),
 });
 
-export const collections = { announcements, officerTerms, departments };
+const documents = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/documents' }),
+  schema: z.object({
+    title: z.string(),
+    fullTitle: z.string(),
+    summary: z.string(),
+    category: z.enum(['章程', '辦法', '作業規範']),
+    sourcePath: z.string(),
+    sourceHash: z.string().regex(/^[a-f0-9]{64}$/),
+    sourceCommit: z.string().regex(/^[a-f0-9]{40}$/),
+    order: z.number().int(),
+  }),
+});
+
+export const collections = { announcements, officerTerms, departments, documents };

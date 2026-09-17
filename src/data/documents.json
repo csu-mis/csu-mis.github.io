@@ -1,0 +1,96 @@
+[
+  {
+    "id": "rules",
+    "title": "組織章程",
+    "summary": "會員權利義務、組織架構與系學會運作的基本規範。",
+    "category": "章程",
+    "sourcePath": "組織章程.md",
+    "aliases": [
+      "rules.md"
+    ]
+  },
+  {
+    "id": "organization",
+    "title": "組織細則",
+    "summary": "幹部編制、各部門職掌與分工。",
+    "category": "辦法",
+    "sourcePath": "辦法/組織細則.md"
+  },
+  {
+    "id": "elections",
+    "title": "選舉罷免辦法",
+    "summary": "選舉、投票、罷免與申訴程序。",
+    "category": "辦法",
+    "sourcePath": "辦法/選舉罷免辦法.md"
+  },
+  {
+    "id": "finance",
+    "title": "財務管理辦法",
+    "summary": "預算、支出、會費與財務公開規範。",
+    "category": "辦法",
+    "sourcePath": "辦法/財務管理辦法.md"
+  },
+  {
+    "id": "equipment",
+    "title": "器材管理辦法",
+    "summary": "器材分類、借用與管理規範。",
+    "category": "辦法",
+    "sourcePath": "辦法/器材管理辦法.md"
+  },
+  {
+    "id": "events",
+    "title": "活動辦理辦法",
+    "summary": "活動規劃、參與規範與安全事項。",
+    "category": "辦法",
+    "sourcePath": "辦法/活動辦理辦法.md"
+  },
+  {
+    "id": "meetings",
+    "title": "會議規則與幹部計點辦法",
+    "summary": "會議進行方式與幹部計點規範。",
+    "category": "辦法",
+    "sourcePath": "辦法/會議規則與幹部計點辦法.md"
+  },
+  {
+    "id": "office",
+    "title": "辦公室使用規則",
+    "summary": "辦公室空間與設備使用規範。",
+    "category": "辦法",
+    "sourcePath": "辦法/辦公室使用規則.md"
+  },
+  {
+    "id": "reimbursement",
+    "title": "活動核銷流程",
+    "summary": "活動經費補助、核銷與會內結算流程。",
+    "category": "作業規範",
+    "sourcePath": "作業規範/活動核銷流程.md"
+  },
+  {
+    "id": "receipts",
+    "title": "單據開立須知",
+    "summary": "單據開立與憑證準備事項。",
+    "category": "作業規範",
+    "sourcePath": "作業規範/單據開立須知.md"
+  },
+  {
+    "id": "leave",
+    "title": "公假申請流程",
+    "summary": "參與活動的公假申請步驟。",
+    "category": "作業規範",
+    "sourcePath": "作業規範/公假申請流程.md"
+  },
+  {
+    "id": "maintenance",
+    "title": "器材保養須知",
+    "summary": "器材定期檢查與保養方式。",
+    "category": "作業規範",
+    "sourcePath": "作業規範/器材保養須知.md"
+  },
+  {
+    "id": "safety",
+    "title": "活動安全計畫指引",
+    "summary": "活動風險與突發事件的應對指引。",
+    "category": "作業規範",
+    "sourcePath": "作業規範/活動安全計畫指引.md"
+  }
+]

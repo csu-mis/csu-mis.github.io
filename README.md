@@ -279,3 +279,28 @@ src/
 
 載入順序在 `src/layouts/BaseLayout.astro` 決定：`global.css` → `components.css` → `pages.css`。
 **不要改用 CSS `@import` 串接**——`@import` 只能放在檔首，會讓被匯入檔的優先級反而低於本檔規則。
+
+## 文件專區
+
+文件正文的唯一來源是 GitHub 的 csu-mis/Association-documents（main 分支）。不接受本機文件庫路徑，也不把正文提交到網站儲存庫。
+
+- 網址：`/documents` 為總覽，`/documents/<id>` 為共用閱讀頁。
+- `src/data/documents.json` 只管理顯示名稱、簡介、分類、來源路徑與穩定網址；正文一律由 GitHub 讀取。
+- 清單中尚未推送到 GitHub 的文件不顯示；文件推送後會自動出現。章程支援舊檔名 `rules.md`，新檔名 `組織章程.md` 優先。
+- 新增清單外的文件時，先在清單設定其 id 與 sourcePath，再把正文推送到文件庫。README 與修訂對照表不自動公開為閱讀頁。
+
+### 自動更新
+
+網站 Actions 每小時的第 7、22、37、52 分鐘檢查文件庫 main 的 commit。只有文件版本或網站版本與線上不同時才重建及部署；網站 push 與手動 workflow_dispatch 會強制重建。GitHub 排程可能延遲，長期無活動的公開儲存庫也可能停用排程，可在 Actions 重新啟用。
+
+每次流程先鎖定文件 commit，型別檢查與建置都讀取同一版本。文件下載或驗證失敗即停止部署，既有線上版本不受影響。線上 `/document-version.json` 記錄來源與網站 commit；閱讀頁來源連結也固定到實際使用的 commit。
+
+### 本機開發與驗證
+
+`pnpm dev`、`pnpm check`、`pnpm build` 都會先從 GitHub 更新文件，需要網路。可單獨執行 `pnpm sync:documents`。不會在下載失敗時默默使用舊快取。
+
+`src/content/documents/` 與 `public/document-version.json` 是被 gitignore 排除的產生檔，請勿直接編輯或提交。同步成功後會替換整個文件快取，已刪除的遠端文件不再留下頁面。CI 使用內建 GITHUB_TOKEN 讀取公開文件庫，不需另設跨庫權杖。
+
+測試：`pnpm test`；型別檢查：`pnpm check`；建置：`pnpm build`。
+
+版型樣式在 `src/styles/pages.css`，介面文案在 `src/i18n/zh-TW.json`。

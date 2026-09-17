@@ -72,6 +72,18 @@ type SocialIcon = 'instagram' | 'facebook' | 'threads' | 'github';
     </div>
   </section>
 
+  <section class="section--tight" aria-labelledby="documents-heading">
+    <div class="container">
+      <div class="documents-callout">
+        <div>
+          <h2 id="documents-heading" class="section-title">{t.documents.aboutTitle}</h2>
+          <p class="section-lead">{t.documents.aboutLead}</p>
+        </div>
+        <a class="button button--primary" href={url('/documents/rules')}>{t.documents.readRules}</a>
+      </div>
+    </div>
+  </section>
+
   <!-- 沿革 -->
   <section class="section--tight" aria-labelledby="history">
     <div class="container">

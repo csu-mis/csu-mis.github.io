@@ -1,0 +1,22 @@
+---
+import { documentGroups, getDocuments } from '../lib/documents';
+import { url } from '../lib/url';
+import { useTranslations } from '../i18n';
+interface Props { current: string }
+const { current } = Astro.props;
+const entries = await getDocuments();
+const t = useTranslations();
+---
+<nav aria-label={t.documents.navigation} class="document-nav">
+  <a class="document-nav__back" href={url('/documents')}>{t.documents.all}</a>
+  {documentGroups.filter((group) => entries.some((entry) => entry.data.category === group)).map((group) => (
+    <div class="document-nav__group">
+      <p class="document-nav__label">{group}</p>
+      <ul>
+        {entries.filter((entry) => entry.data.category === group).map((entry) => (
+          <li><a href={url(`/documents/${entry.id}`)} aria-current={current === entry.id ? 'page' : undefined}>{entry.data.title}</a></li>
+        ))}
+      </ul>
+    </div>
+  ))}
+</nav>

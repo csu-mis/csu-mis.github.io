@@ -1,0 +1,65 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DocumentNavigation from '../../components/DocumentNavigation.astro';
+import { getDocuments, documentSource } from '../../lib/documents';
+import { useTranslations } from '../../i18n';
+import { url } from '../../lib/url';
+
+export const getStaticPaths = (async () => {
+  const entries = await getDocuments();
+  return entries.map((entry, index) => ({ params: { id: entry.id }, props: { entry, next: entries[index + 1] } }));
+}) satisfies GetStaticPaths;
+const { entry, next } = Astro.props;
+// 舊版章程正文含一級標題；只調整產生的 HTML，原文快取保持完整。
+const renderedEntry = entry.rendered ? {
+  ...entry,
+  rendered: { ...entry.rendered, html: entry.rendered.html.replace(/<(\/?)h1(?=[\s>])/g, '<$1h2') },
+} : entry;
+const { Content, headings } = await render(renderedEntry);
+const chapters = headings.filter((heading) => heading.depth <= 2);
+const t = useTranslations();
+---
+<BaseLayout title={entry.data.title} description={entry.data.summary}>
+  <div class="container document-shell">
+    <nav class="document-breadcrumb" aria-label={t.documents.breadcrumb}>
+      <a href={url('/')}>{t.nav.home}</a><span aria-hidden="true">/</span>
+      <a href={url('/documents')}>{t.documents.title}</a><span aria-hidden="true">/</span>
+      <span aria-current="page">{entry.data.title}</span>
+    </nav>
+    <div class="document-layout">
+      <aside class="document-sidebar"><DocumentNavigation current={entry.id} /></aside>
+      <div class="document-main">
+        <details class="document-mobile-nav">
+          <summary>{t.documents.switch}<span>{entry.data.title}</span></summary>
+          <DocumentNavigation current={entry.id} />
+        </details>
+        <article class="document-paper">
+          <header class="document-heading">
+            <span class="tag tag--accent">{entry.data.category}</span>
+            <h1>{entry.data.fullTitle}</h1>
+            <p>{entry.data.summary}</p>
+            <div class="document-heading__links">
+              <a href={documentSource(entry.data.sourcePath, entry.data.sourceCommit)}>{t.documents.source}</a>
+              <a href={documentSource(entry.data.sourcePath, entry.data.sourceCommit, true)}>{t.documents.history}</a>
+            </div>
+          </header>
+          {chapters.length > 0 && (
+            <details class="document-toc" open>
+              <summary>{t.documents.toc}</summary>
+              <nav aria-label={t.documents.toc}><ul>
+                {chapters.map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}
+              </ul></nav>
+            </details>
+          )}
+          <div class="prose document-prose"><Content /></div>
+        </article>
+        <nav class="document-bottom" aria-label={t.documents.related}>
+          <a href={url('/documents')}>{t.documents.back}</a>
+          {next && <a href={url(`/documents/${next.id}`)}><span>{t.documents.related}</span>{next.data.title}</a>}
+        </nav>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

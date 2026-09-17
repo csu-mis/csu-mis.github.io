@@ -5,6 +5,8 @@ on:
     branches: [main]
   # 允許在 Actions 頁面手動觸發
   workflow_dispatch:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
 
 # 授予 GITHUB_TOKEN 部署 Pages 所需權限
 permissions:
@@ -18,8 +20,31 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  documents:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      changed: ${{ steps.documents.outputs.changed }}
+      source_sha: ${{ steps.documents.outputs.source_sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 比對 GitHub 文件與線上版本
+        id: documents
+        run: node scripts/sync-documents.mjs --check
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+  build:
+    needs: documents
+    if: github.event_name != 'schedule' || needs.documents.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    env:
+      DOCUMENTS_SHA: ${{ needs.documents.outputs.source_sha }}
+      GITHUB_TOKEN: ${{ github.token }}
     steps:
       - name: 取出原始碼
         uses: actions/checkout@v4
@@ -38,6 +63,9 @@ jobs:
 
       - name: 型別檢查
         run: pnpm check
+
+      - name: 驗證文件同步邏輯
+        run: pnpm test
 
       - name: 建置網站
         run: pnpm build

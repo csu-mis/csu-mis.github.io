@@ -8,7 +8,8 @@
     "menu": "選單",
     "openMenu": "開啟選單",
     "closeMenu": "關閉選單",
-    "skipToContent": "跳至主要內容"
+    "skipToContent": "跳至主要內容",
+    "documents": "文件專區"
   },
   "home": {
     "eyebrow": "CSU MIS Student Association",
@@ -98,5 +99,27 @@
   "common": {
     "toTop": "回到頂端",
     "externalLink": "（在新分頁開啟）"
+  },
+  "documents": {
+    "title": "文件專區",
+    "lead": "從組織章程到日常作業，查閱系學會的運作規範與辦理流程。",
+    "hierarchy": "本會法規分為章程、辦法與作業規範，下級法規不得牴觸上級法規。",
+    "all": "全部文件",
+    "switch": "切換文件",
+    "toc": "本頁目錄",
+    "source": "查看 GitHub 原文",
+    "history": "修訂紀錄",
+    "back": "返回文件總覽",
+    "breadcrumb": "頁面位置",
+    "navigation": "文件導覽",
+    "aboutTitle": "組織章程與相關規範",
+    "aboutLead": "了解會員權利義務，以及系學會的組織與運作方式。",
+    "readRules": "閱讀組織章程",
+    "related": "繼續閱讀",
+    "groups": {
+      "章程": "系學會的基本規範",
+      "辦法": "各項會務的執行規範",
+      "作業規範": "日常辦理流程與注意事項"
+    }
   }
 }

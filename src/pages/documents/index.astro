@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { documentGroups, getDocuments } from '../../lib/documents';
+import { useTranslations } from '../../i18n';
+import { url } from '../../lib/url';
+import Icon from '../../components/Icon.astro';
+const entries = await getDocuments();
+const t = useTranslations();
+---
+<BaseLayout title={t.documents.title} description={t.documents.lead}>
+  <header class="page-header">
+    <div class="container">
+      <h1>{t.documents.title}</h1>
+      <p class="section-lead">{t.documents.lead}</p>
+    </div>
+  </header>
+  <div class="container documents-index">
+    <p class="documents-index__note">{t.documents.hierarchy}</p>
+    {documentGroups.filter((group) => entries.some((entry) => entry.data.category === group)).map((group, index) => (
+      <section class="documents-group" aria-labelledby={`group-${index}`}>
+        <div class="documents-group__heading">
+          <h2 id={`group-${index}`}>{group}</h2>
+          <p>{t.documents.groups[group]}</p>
+        </div>
+        <ul class="documents-group__list">
+          {entries.filter((entry) => entry.data.category === group).map((entry) => (
+            <li><a class="document-link" href={url(`/documents/${entry.id}`)}>
+              <div><h3>{entry.data.title}</h3><p>{entry.data.summary}</p></div>
+              <Icon name="arrow-right" size={20} />
+            </a></li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</BaseLayout>
