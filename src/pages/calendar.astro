@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
 import { calendar } from '../lib/site';
 import { useTranslations } from '../i18n';
 
@@ -31,22 +32,47 @@ const calendars = [
     </div>
   </header>
 
-  <section class="section--tight calendar-embed" aria-label={t.calendar.title}>
-    <div class="container">
-      <div class="calendar-embed__tabs" role="tablist" aria-label={t.calendar.selectCalendar}>
-        {calendars.map((entry, index) => (
-          <button
-            type="button"
-            class:list={['chip-bar__item', { 'is-active': index === 0 }]}
-            role="tab"
-            id={`calendar-tab-${entry.id}`}
-            aria-selected={index === 0 ? 'true' : 'false'}
-            aria-controls="calendar-panel"
-            tabindex={index === 0 ? 0 : -1}
-            data-calendar-src={entry.src}
-          >{entry.label}</button>
-        ))}
+  <section class="calendar-embed" aria-label={t.calendar.title}>
+    <div class="container section--tight chip-bar-page">
+      <div class="chip-bar">
+        <p class="chip-bar__label" id="calendar-switch-label">
+          <Icon name="calendar" size={16} />
+          {t.calendar.selectCalendar}
+        </p>
+
+        <div class="chip-bar__scroller">
+          <div
+            class="chip-bar__list"
+            role="tablist"
+            aria-labelledby="calendar-switch-label"
+          >
+            {calendars.map((entry, index) => (
+              <button
+                type="button"
+                class:list={['chip-bar__item', { 'is-active': index === 0 }]}
+                role="tab"
+                id={`calendar-tab-${entry.id}`}
+                aria-selected={index === 0 ? 'true' : 'false'}
+                aria-controls="calendar-panel"
+                tabindex={index === 0 ? 0 : -1}
+                data-calendar-src={entry.src}
+              >{entry.label}</button>
+            ))}
+          </div>
+        </div>
+
+        <a
+          class="chip-bar__action"
+          href={desktopSrc}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-calendar-open
+        >
+          {t.calendar.openInGoogle}
+          <span class="visually-hidden">{t.common.externalLink}</span>
+        </a>
       </div>
+
       <div id="calendar-panel" role="tabpanel" aria-labelledby="calendar-tab-department" tabindex="0">
         <!-- 桌機月檢視；窄螢幕改顯示議程檢視，避免 Google 月曆嵌入在手機上擠成無法點的格子 -->
         <div class="calendar-embed__frame calendar-embed__frame--desktop">
@@ -55,13 +81,6 @@ const calendars = [
         <div class="calendar-embed__frame calendar-embed__frame--mobile">
           <iframe src={mobileSrc} title={t.calendar.department} loading="lazy"></iframe>
         </div>
-
-        <p class="calendar-embed__open">
-          <a href={desktopSrc} target="_blank" rel="noopener noreferrer">
-            {t.calendar.openInGoogle}
-            <span class="visually-hidden">{t.common.externalLink}</span>
-          </a>
-        </p>
       </div>
     </div>
   </section>
@@ -71,7 +90,9 @@ const calendars = [
   const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-calendar-src]'));
   const panel = document.querySelector<HTMLElement>('#calendar-panel');
   const frames = panel?.querySelectorAll<HTMLIFrameElement>('iframe');
-  const openLink = panel?.querySelector<HTMLAnchorElement>('a');
+  const openLink = document.querySelector<HTMLAnchorElement>('[data-calendar-open]');
+  const active = document.querySelector<HTMLElement>('.chip-bar .is-active');
+  active?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'instant' });
 
   function selectCalendar(tab: HTMLButtonElement) {
     if (!panel || !frames || !openLink || tab.getAttribute('aria-selected') === 'true') return;

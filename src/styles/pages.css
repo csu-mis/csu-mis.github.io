@@ -823,13 +823,6 @@
    Google 嵌入日曆本身不隨容器重排，因此用滿寬容器 + 流體高度，
    並在窄螢幕改顯示議程檢視（見 calendar.astro 的兩組 iframe）。
    -------------------------------------------------------------------------- */
-.calendar-embed__tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-block-end: var(--space-6);
-}
-
 .calendar-embed__frame {
   width: 100%;
   /* 下限對齊原始嵌入高度 600px，避免月檢視被壓扁 */
@@ -850,11 +843,6 @@
 
 .calendar-embed__frame--mobile {
   display: none;
-}
-
-.calendar-embed__open {
-  margin-block-start: var(--space-4);
-  font-size: var(--text-sm);
 }
 
 @media (max-width: 700px) {
@@ -908,10 +896,10 @@
   margin-block-start: var(--space-8);
 }
 
-/* 文件專區：三級文件索引與共用閱讀版面 */
-.documents-index { padding-block: var(--space-8) var(--space-16); }
-.documents-index__note { color: var(--color-muted-foreground); max-width: 65ch; margin-bottom: var(--space-8); }
-.documents-group { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: var(--space-8); padding-block: var(--space-8); border-top: 1px solid var(--color-border); }
+/* 組織章程：三級文件索引與共用閱讀版面 */
+.documents-index { padding-block: 0 var(--space-16); }
+.documents-group { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: var(--space-8); padding-block: var(--space-8); }
+.documents-group + .documents-group { border-top: 1px solid var(--color-border); }
 .documents-group__heading h2 { color: var(--color-primary); font-size: var(--text-2xl); }
 .documents-group__heading p { color: var(--color-muted-foreground); font-size: var(--text-sm); margin-top: var(--space-3); }
 .documents-group__list { list-style: none; padding: 0; border: 1px solid var(--color-border-soft); border-radius: var(--radius-lg); overflow: clip; background: var(--color-surface); }

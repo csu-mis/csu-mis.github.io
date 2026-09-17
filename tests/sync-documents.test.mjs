@@ -11,7 +11,7 @@ test('新檔案推送後加入，章程優先使用新檔名', () => {
   const files = selectDocuments(['rules.md','組織章程.md','辦法/財務管理辦法.md','修訂說明/草案.md'], manifest);
   assert.deepEqual(files.map(x=>x.sourcePath), ['組織章程.md','辦法/財務管理辦法.md']);
 });
-test('沒有章程時停止，避免部署空文件專區', () => {
+test('沒有章程時停止，避免部署空的組織章程頁', () => {
   assert.throws(()=>selectDocuments(['Readme.md'],manifest), /章程/);
 });
 test('原文不含有效標題時拒絕匯入', () => {

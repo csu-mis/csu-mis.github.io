@@ -139,7 +139,7 @@ src/data/officers/24.json   →   https://csu-mis.github.io/officers/24
       "department": "核心幹部",   // 對應 departments.json 的組別名稱
       "grade": "資管四甲",        // 班級，可留空字串
       "instagram": "csumis_sa",  // 填帳號或完整網址都可以，留空就不顯示
-      "email": "",               // Gravatar 用，不會顯示在頁面上，見下方
+      "email": "",               // 填 SHA-256 雜湊當 Gravatar，不要填明碼信箱，見下方
       "photo": "",               // 頭貼，見下方；留空會用姓名末字當頭像
       "order": 1,                // 同組別內的排序，小的在前
       "intern": false            // 實習／觀察幹部設為 true，卡片會標「實習」
@@ -162,17 +162,28 @@ src/data/officers/24.json   →   https://csu-mis.github.io/officers/24
 
 ### 用 Gravatar 當頭貼
 
-沒有放本機圖片時，可以改在 `email` 欄位填該幹部**註冊 Gravatar 用的信箱**，
-網站會在 build 時算出雜湊（SHA-256）產生頭貼網址，前端不需要任何 JS：
+沒有放本機圖片時，在 `email` 填該幹部**註冊 Gravatar 用的信箱**的 SHA-256 雜湊。
+網站會直接拿這串雜湊去跟 Gravatar 要圖，頭貼跟填明碼信箱一樣，但公開 repo 裡看不到信箱。
 
+**請填雜湊，不要填明碼。** 本站原始碼在 GitHub 公開。欄位也還能接受明碼（build 時會自動算雜湊），只是不要這樣提交。
+
+產生雜湊：把信箱改成小寫、去掉前後空白後算 SHA-256。在專案目錄執行，把 `someone@example.com` 換成實際信箱：
+
+```bash
+node -e "console.log(require('crypto').createHash('sha256').update('someone@example.com'.trim().toLowerCase()).digest('hex'))"
 ```
-https://gravatar.com/avatar/<雜湊>?s=128&d=mp
+
+會印出 64 個小寫英數，貼進 JSON：
+
+```json
+"email": "a1b2c3d4e5f6..."
 ```
+
+可以用瀏覽器打開 `https://gravatar.com/avatar/<剛算出的雜湊>?s=128&d=mp` 預覽。有註冊就會看到照片，沒註冊是灰色人形剪影。
 
 - **信箱不會顯示在頁面上**，只用來產生頭貼網址；卡片上的聯絡方式是 Instagram
-- 該信箱**沒有註冊過 Gravatar** 時，會顯示 Gravatar 提供的灰色人形剪影（`d=mp`）
-- 不想把明碼信箱放進公開 repo 的話，`email` 也可以直接填該信箱的 SHA-256 雜湊：
-  `node -e "console.log(require('crypto').createHash('sha256').update('someone@example.com'.trim().toLowerCase()).digest('hex'))"`
+- 必須用對方註冊 Gravatar 的那封信箱來算，大小寫不一樣會對不上
+- 該信箱**沒有註冊過 Gravatar** 時，會顯示灰色人形剪影（`d=mp`），不會破圖
 
 **頭貼的優先順序**：`photo`（本機圖片）→ `email`（Gravatar）→ 姓名末字的文字頭像。
 本機圖片不受第三方影響、也不會讓訪客的瀏覽器連到 gravatar.com，仍然是首選。
@@ -280,7 +291,7 @@ src/
 載入順序在 `src/layouts/BaseLayout.astro` 決定：`global.css` → `components.css` → `pages.css`。
 **不要改用 CSS `@import` 串接**——`@import` 只能放在檔首，會讓被匯入檔的優先級反而低於本檔規則。
 
-## 文件專區
+## 組織章程
 
 文件正文的唯一來源是 GitHub 的 csu-mis/Association-documents（main 分支）。不接受本機文件庫路徑，也不把正文提交到網站儲存庫。
 

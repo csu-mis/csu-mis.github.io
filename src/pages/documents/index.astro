@@ -15,7 +15,6 @@ const t = useTranslations();
     </div>
   </header>
   <div class="container documents-index">
-    <p class="documents-index__note">{t.documents.hierarchy}</p>
     {documentGroups.filter((group) => entries.some((entry) => entry.data.category === group)).map((group, index) => (
       <section class="documents-group" aria-labelledby={`group-${index}`}>
         <div class="documents-group__heading">
