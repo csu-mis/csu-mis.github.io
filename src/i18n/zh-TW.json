@@ -65,8 +65,10 @@
   },
   "calendar": {
     "title": "行事曆",
-    "lead": "系學會活動、會議與重要時程，都整理在這裡。",
-    "iframeTitle": "系學會 Google 行事曆",
+    "lead": "系上與系學會的活動、會議與重要時程，都整理在這裡。",
+    "department": "系上行事曆",
+    "association": "系學會行事曆",
+    "selectCalendar": "選擇行事曆",
     "openInGoogle": "在 Google 日曆開啟"
   },
   "about": {

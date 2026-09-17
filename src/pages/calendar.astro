@@ -16,6 +16,10 @@ const desktopSrc = `https://calendar.google.com/calendar/embed?${embedParams}`;
 const mobileParams = new URLSearchParams(embedParams);
 mobileParams.set('mode', 'AGENDA');
 const mobileSrc = `https://calendar.google.com/calendar/embed?${mobileParams}`;
+const calendars = [
+  { id: 'department', src: calendar.src, label: t.calendar.department },
+  { id: 'association', src: calendar.associationSrc, label: t.calendar.association },
+];
 ---
 
 <BaseLayout title={t.calendar.title} description={t.calendar.lead}>
@@ -27,22 +31,80 @@ const mobileSrc = `https://calendar.google.com/calendar/embed?${mobileParams}`;
     </div>
   </header>
 
-  <section class="section--tight calendar-embed" aria-label={t.calendar.iframeTitle}>
+  <section class="section--tight calendar-embed" aria-label={t.calendar.title}>
     <div class="container">
-      <!-- 桌機月檢視；窄螢幕改顯示議程檢視，避免 Google 月曆嵌入在手機上擠成無法點的格子 -->
-      <div class="calendar-embed__frame calendar-embed__frame--desktop">
-        <iframe src={desktopSrc} title={t.calendar.iframeTitle}></iframe>
+      <div class="calendar-embed__tabs" role="tablist" aria-label={t.calendar.selectCalendar}>
+        {calendars.map((entry, index) => (
+          <button
+            type="button"
+            class:list={['chip-bar__item', { 'is-active': index === 0 }]}
+            role="tab"
+            id={`calendar-tab-${entry.id}`}
+            aria-selected={index === 0 ? 'true' : 'false'}
+            aria-controls="calendar-panel"
+            tabindex={index === 0 ? 0 : -1}
+            data-calendar-src={entry.src}
+          >{entry.label}</button>
+        ))}
       </div>
-      <div class="calendar-embed__frame calendar-embed__frame--mobile">
-        <iframe src={mobileSrc} title={t.calendar.iframeTitle} loading="lazy"></iframe>
-      </div>
+      <div id="calendar-panel" role="tabpanel" aria-labelledby="calendar-tab-department" tabindex="0">
+        <!-- 桌機月檢視；窄螢幕改顯示議程檢視，避免 Google 月曆嵌入在手機上擠成無法點的格子 -->
+        <div class="calendar-embed__frame calendar-embed__frame--desktop">
+          <iframe src={desktopSrc} title={t.calendar.department}></iframe>
+        </div>
+        <div class="calendar-embed__frame calendar-embed__frame--mobile">
+          <iframe src={mobileSrc} title={t.calendar.department} loading="lazy"></iframe>
+        </div>
 
-      <p class="calendar-embed__open">
-        <a href={desktopSrc} target="_blank" rel="noopener noreferrer">
-          {t.calendar.openInGoogle}
-          <span class="visually-hidden">{t.common.externalLink}</span>
-        </a>
-      </p>
+        <p class="calendar-embed__open">
+          <a href={desktopSrc} target="_blank" rel="noopener noreferrer">
+            {t.calendar.openInGoogle}
+            <span class="visually-hidden">{t.common.externalLink}</span>
+          </a>
+        </p>
+      </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-calendar-src]'));
+  const panel = document.querySelector<HTMLElement>('#calendar-panel');
+  const frames = panel?.querySelectorAll<HTMLIFrameElement>('iframe');
+  const openLink = panel?.querySelector<HTMLAnchorElement>('a');
+
+  function selectCalendar(tab: HTMLButtonElement) {
+    if (!panel || !frames || !openLink || tab.getAttribute('aria-selected') === 'true') return;
+    tabs.forEach((item) => {
+      const selected = item === tab;
+      item.setAttribute('aria-selected', String(selected));
+      item.tabIndex = selected ? 0 : -1;
+      item.classList.toggle('is-active', selected);
+    });
+    panel.setAttribute('aria-labelledby', tab.id);
+    frames.forEach((frame) => {
+      const url = new URL(frame.src);
+      url.searchParams.set('src', tab.dataset.calendarSrc!);
+      frame.src = url.toString();
+      frame.title = tab.textContent?.trim() ?? '';
+    });
+    openLink.href = frames[0].src;
+  }
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => selectCalendar(tab));
+    tab.addEventListener('keydown', (event) => {
+      let next: number;
+      switch (event.key) {
+        case 'ArrowRight': next = (index + 1) % tabs.length; break;
+        case 'ArrowLeft': next = (index - 1 + tabs.length) % tabs.length; break;
+        case 'Home': next = 0; break;
+        case 'End': next = tabs.length - 1; break;
+        default: return;
+      }
+      event.preventDefault();
+      tabs[next].focus();
+      selectCalendar(tabs[next]);
+    });
+  });
+</script>

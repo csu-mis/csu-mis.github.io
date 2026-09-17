@@ -823,6 +823,13 @@
    Google 嵌入日曆本身不隨容器重排，因此用滿寬容器 + 流體高度，
    並在窄螢幕改顯示議程檢視（見 calendar.astro 的兩組 iframe）。
    -------------------------------------------------------------------------- */
+.calendar-embed__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-block-end: var(--space-6);
+}
+
 .calendar-embed__frame {
   width: 100%;
   /* 下限對齊原始嵌入高度 600px，避免月檢視被壓扁 */
