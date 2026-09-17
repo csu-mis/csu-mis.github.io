@@ -1,5 +1,6 @@
 import { getCollection } from 'astro:content';
 import manifest from '../data/documents.json';
+import { historyPathsFor } from './document-history';
 
 export const documentGroups = ['章程', '辦法', '作業規範'] as const;
 export async function getDocuments() {
@@ -12,4 +13,9 @@ export async function getDocuments() {
 export function documentSource(path: string, commit: string, history = false) {
   const encoded = path.split('/').map(encodeURIComponent).join('/');
   return `https://github.com/csu-mis/Association-documents/${history ? 'commits' : 'blob'}/${commit}/${encoded}`;
+}
+
+export function documentHistoryPaths(id: string) {
+  const item = manifest.find((entry) => entry.id === id);
+  return item ? historyPathsFor(item) : [];
 }

@@ -26,3 +26,6 @@ node_modules/
 src/content/documents/
 src/content/.documents-*/
 public/document-version.json
+
+# 本機瀏覽器截圖，不進版控
+.playwright-mcp/

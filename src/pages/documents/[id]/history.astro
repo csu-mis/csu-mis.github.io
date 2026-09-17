@@ -1,0 +1,172 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import DocumentNavigation from '../../../components/DocumentNavigation.astro';
+import { getDocuments, documentSource, documentHistoryPaths } from '../../../lib/documents';
+import { useTranslations } from '../../../i18n';
+import { url } from '../../../lib/url';
+
+export const getStaticPaths = (async () => {
+  const entries = await getDocuments();
+  return entries.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const t = useTranslations();
+const title = `${entry.data.title}${t.documents.history}`;
+const fallback = documentSource(entry.data.sourcePath, entry.data.sourceCommit, true);
+const paths = documentHistoryPaths(entry.id);
+---
+<BaseLayout title={title} description={t.documents.historyLead}>
+  <div class="container document-shell">
+    <nav class="document-breadcrumb" aria-label={t.documents.breadcrumb}>
+      <a href={url('/')}>{t.nav.home}</a><span aria-hidden="true">/</span>
+      <a href={url('/documents')}>{t.documents.title}</a><span aria-hidden="true">/</span>
+      <a href={url(`/documents/${entry.id}`)}>{entry.data.title}</a><span aria-hidden="true">/</span>
+      <span aria-current="page">{t.documents.history}</span>
+    </nav>
+    <div class="document-layout">
+      <aside class="document-sidebar"><DocumentNavigation current={entry.id} /></aside>
+      <div class="document-main">
+        <details class="document-mobile-nav">
+          <summary>{t.documents.switch}<span>{entry.data.title}</span></summary>
+          <DocumentNavigation current={entry.id} />
+        </details>
+        <article class="document-paper">
+          <header class="document-heading">
+            <span class="tag tag--accent">{t.documents.history}</span>
+            <h1>{title}</h1>
+            <p>{t.documents.historyLead}</p>
+            <div class="document-heading__links">
+              <a href={url(`/documents/${entry.id}`)}>{t.documents.historyBack}</a>
+              <a href={documentSource(entry.data.sourcePath, entry.data.sourceCommit)}>{t.documents.source}</a>
+            </div>
+          </header>
+          <div
+            class="document-history"
+            data-history
+            data-paths={JSON.stringify(paths)}
+            data-fallback={fallback}
+            data-loading={t.documents.historyLoading}
+            data-empty={t.documents.historyEmpty}
+            data-error={t.documents.historyError}
+            data-fallback-label={t.documents.historyFallback}
+            data-commit-link={t.documents.historyCommit}
+            data-external={t.common.externalLink}
+          >
+            <p class="document-history__status" data-history-status aria-live="polite">{t.documents.historyLoading}</p>
+            <ol class="document-history__list" data-history-list hidden></ol>
+            <noscript>
+              <p class="document-history__status">{t.documents.historyNoscript}</p>
+              <p><a href={fallback}>{t.documents.historyFallback}<span class="visually-hidden">{t.common.externalLink}</span></a></p>
+            </noscript>
+          </div>
+        </article>
+        <nav class="document-bottom" aria-label={t.documents.related}>
+          <a href={url(`/documents/${entry.id}`)}>{t.documents.historyBack}</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import { fetchDocumentHistory, formatHistoryDate } from '../../../lib/document-history';
+
+  const rootEl = document.querySelector<HTMLElement>('[data-history]');
+  const statusEl = rootEl?.querySelector<HTMLElement>('[data-history-status]');
+  const listEl = rootEl?.querySelector<HTMLOListElement>('[data-history-list]');
+  if (!rootEl || !statusEl || !listEl) throw new Error('缺少修訂紀錄容器');
+  const root: HTMLElement = rootEl;
+  const status: HTMLElement = statusEl;
+  const list: HTMLOListElement = listEl;
+
+  const copy = {
+    loading: root.dataset.loading ?? '',
+    empty: root.dataset.empty ?? '',
+    error: root.dataset.error ?? '',
+    fallbackLabel: root.dataset.fallbackLabel ?? '',
+    commitLink: root.dataset.commitLink ?? '',
+    external: root.dataset.external ?? '',
+    fallback: root.dataset.fallback ?? '',
+  };
+  const paths = JSON.parse(root.dataset.paths ?? '[]') as string[];
+
+  function setStatus(message: string, fallback = false) {
+    status.replaceChildren();
+    status.append(message);
+    if (fallback && copy.fallback) {
+      status.append(' ');
+      const link = document.createElement('a');
+      link.href = copy.fallback;
+      link.rel = 'noopener noreferrer';
+      link.target = '_blank';
+      link.append(copy.fallbackLabel);
+      const hidden = document.createElement('span');
+      hidden.className = 'visually-hidden';
+      hidden.append(copy.external);
+      link.append(hidden);
+      status.append(link);
+    }
+  }
+
+  function render(commits: Awaited<ReturnType<typeof fetchDocumentHistory>>) {
+    list.replaceChildren();
+    if (commits.length === 0) {
+      list.hidden = true;
+      setStatus(copy.empty);
+      return;
+    }
+    for (const commit of commits) {
+      const item = document.createElement('li');
+      item.className = 'document-history__item';
+
+      const time = document.createElement('time');
+      time.className = 'document-history__date';
+      time.dateTime = commit.date;
+      time.append(formatHistoryDate(commit.date));
+
+      const heading = document.createElement('h2');
+      heading.className = 'document-history__title';
+      heading.append(commit.title);
+
+      item.append(time, heading);
+
+      if (commit.body) {
+        const body = document.createElement('p');
+        body.className = 'document-history__body';
+        body.append(commit.body);
+        item.append(body);
+      }
+
+      const meta = document.createElement('p');
+      meta.className = 'document-history__meta';
+      if (commit.author) {
+        const author = document.createElement('span');
+        author.append(commit.author);
+        meta.append(author);
+      }
+      const link = document.createElement('a');
+      link.href = commit.url;
+      link.rel = 'noopener noreferrer';
+      link.target = '_blank';
+      link.append(copy.commitLink);
+      const hidden = document.createElement('span');
+      hidden.className = 'visually-hidden';
+      hidden.append(copy.external);
+      link.append(hidden);
+      meta.append(link);
+      item.append(meta);
+      list.append(item);
+    }
+    status.hidden = true;
+    list.hidden = false;
+  }
+
+  setStatus(copy.loading);
+  fetchDocumentHistory(paths).then(render).catch(() => {
+    list.hidden = true;
+    status.hidden = false;
+    setStatus(copy.error, true);
+  });
+</script>

@@ -42,7 +42,7 @@ const t = useTranslations();
             <p>{entry.data.summary}</p>
             <div class="document-heading__links">
               <a href={documentSource(entry.data.sourcePath, entry.data.sourceCommit)}>{t.documents.source}</a>
-              <a href={documentSource(entry.data.sourcePath, entry.data.sourceCommit, true)}>{t.documents.history}</a>
+              <a href={url(`/documents/${entry.id}/history`)}>{t.documents.history}</a>
             </div>
           </header>
           {chapters.length > 0 && (

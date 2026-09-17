@@ -896,7 +896,7 @@
   margin-block-start: var(--space-8);
 }
 
-/* 組織章程：三級文件索引與共用閱讀版面 */
+/* 文件專區：三級文件索引與共用閱讀版面 */
 .documents-index { padding-block: 0 var(--space-16); }
 .documents-group { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: var(--space-8); padding-block: var(--space-8); }
 .documents-group + .documents-group { border-top: 1px solid var(--color-border); }
@@ -925,6 +925,14 @@
 .document-heading h1 { margin-top: var(--space-4); font-size: clamp(1.65rem, 2.8vw, 2.4rem); line-height: 1.5; color: var(--color-primary); text-wrap: pretty; }
 .document-heading > p { margin-top: var(--space-4); color: var(--color-muted-foreground); }
 .document-heading__links { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); margin-block: var(--space-6) var(--space-8); font-size: var(--text-sm); }
+.document-history__status { color: var(--color-muted-foreground); }
+.document-history__list { list-style: none; padding: 0; margin-top: var(--space-2); border-inline-start: 2px solid var(--color-border-soft); }
+.document-history__item { position: relative; padding: var(--space-4) 0 var(--space-8) var(--space-8); }
+.document-history__item::before { content: ''; position: absolute; inset-inline-start: -7px; top: calc(var(--space-4) + 0.55em); width: 12px; height: 12px; border-radius: 50%; background: var(--color-accent); border: 2px solid var(--color-background); }
+.document-history__date { font-size: var(--text-sm); color: var(--color-accent); font-variant-numeric: tabular-nums; }
+.document-history__title { margin-top: var(--space-2); font-size: var(--text-lg); color: var(--color-primary); text-wrap: pretty; }
+.document-history__body { margin-top: var(--space-3); color: var(--color-muted-foreground); font-size: var(--text-sm); white-space: pre-wrap; }
+.document-history__meta { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin-top: var(--space-3); font-size: var(--text-sm); color: var(--color-muted-foreground); }
 .document-toc { border-block: 1px solid var(--color-border-soft); padding-block: var(--space-4); margin-bottom: var(--space-8); }
 .document-toc summary { cursor: pointer; font-weight: 700; color: var(--color-primary); padding-block: var(--space-2); }
 .document-toc ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-1) var(--space-6); list-style: none; padding: var(--space-3) 0 0; }

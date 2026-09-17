@@ -9,7 +9,7 @@
     "openMenu": "開啟選單",
     "closeMenu": "關閉選單",
     "skipToContent": "跳至主要內容",
-    "documents": "組織章程"
+    "documents": "文件專區"
   },
   "home": {
     "eyebrow": "CSU MIS Student Association",
@@ -101,16 +101,24 @@
     "externalLink": "（在新分頁開啟）"
   },
   "documents": {
-    "title": "組織章程",
+    "title": "文件專區",
     "lead": "從組織章程到日常作業，查閱系學會的運作規範與辦理流程。",
-    "all": "總覽",
+    "all": "全部文件",
     "switch": "切換文件",
     "toc": "本頁目錄",
     "source": "查看 GitHub 原文",
     "history": "修訂紀錄",
-    "back": "返回組織章程",
+    "historyLead": "這份文件在 GitHub 文件庫中的歷次修訂，依時間新到舊排列。",
+    "historyLoading": "正在讀取修訂紀錄…",
+    "historyEmpty": "這份文件目前沒有修訂紀錄。",
+    "historyError": "目前無法讀取修訂紀錄，請稍後再試。",
+    "historyFallback": "改到 GitHub 查看",
+    "historyCommit": "查看此次變更",
+    "historyBack": "返回文件",
+    "historyNoscript": "請開啟 JavaScript 以載入修訂紀錄。",
+    "back": "返回文件總覽",
     "breadcrumb": "頁面位置",
-    "navigation": "組織章程導覽",
+    "navigation": "文件導覽",
     "aboutTitle": "組織章程與相關規範",
     "aboutLead": "了解會員權利義務，以及系學會的組織與運作方式。",
     "readRules": "閱讀組織章程",
