@@ -97,6 +97,13 @@ type SocialIcon = "instagram" | "facebook" | "threads" | "github";
 
     <div class="container footer__bottom">
         <p>© {currentYear} {site.name} {t.footer.rights}</p>
-        <p>{t.footer.builtWith}</p>
+        <p>
+            {t.footer.builtWith}
+            <a
+                href={t.footer.builtWithUrl}
+                target="_blank"
+                rel="noopener noreferrer">{t.footer.builtWithName}</a
+            >
+        </p>
     </div>
 </footer>

@@ -94,7 +94,9 @@
     "contactTitle": "聯絡資訊",
     "followTitle": "追蹤我們",
     "rights": "版權所有",
-    "builtWith": "Build By ElvisLo"
+    "builtWith": "Built By ",
+    "builtWithName": "ElvisLo",
+    "builtWithUrl": "https://elvislo.tw"
   },
   "common": {
     "toTop": "回到頂端",
