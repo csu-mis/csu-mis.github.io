@@ -371,6 +371,28 @@
 }
 
 @media (max-width: 640px) {
+  /* 手機上標題縮小，減少中文詞語被硬切到下一行 */
+  .post-header {
+    padding-block: var(--space-8) var(--space-6);
+  }
+
+  .post-title {
+    font-size: var(--text-3xl);
+    line-height: 1.3;
+  }
+
+  .post-summary {
+    font-size: var(--text-base);
+  }
+
+  .post-body {
+    padding-block: var(--space-8);
+  }
+
+  .toc {
+    margin-block-end: var(--space-8);
+  }
+
   .post-nav {
     grid-template-columns: 1fr;
   }
@@ -959,6 +981,8 @@
 }
 @media (max-width: 480px) {
   .document-toc ul { grid-template-columns: minmax(0, 1fr); }
-  .document-paper { padding-inline: var(--space-4); }
+  /* 紙張貼齊螢幕邊緣，省下外框與雙層內距，每行多容納約兩個字 */
+  .document-paper { margin-inline: calc(-1 * var(--space-4)); padding-inline: var(--space-4); border-inline: none; border-radius: 0; }
+  .document-prose { line-height: 1.85; }
   .document-link { padding: var(--space-4); }
 }

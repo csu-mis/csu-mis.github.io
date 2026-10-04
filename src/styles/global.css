@@ -443,6 +443,15 @@ ol {
   color: color-mix(in srgb, var(--color-foreground) 92%, transparent);
 }
 
+/* 中文內文左右對齊：text-wrap: pretty 會為了避免孤字縮短前面幾行，
+   中文沒有詞間空白可吸收，右緣就會參差不齊（iOS Safari 尤其明顯） */
+.prose p,
+.prose li {
+  text-align: justify;
+  text-wrap: wrap;
+  line-break: strict;
+}
+
 .prose > * + * {
   margin-block-start: var(--space-6);
 }
@@ -484,7 +493,8 @@ ol {
   background: var(--color-accent-soft);
   border-radius: 0 var(--radius) var(--radius) 0;
   color: var(--color-muted-foreground);
-  font-style: italic;
+  /* 中文字型沒有斜體，italic 只會被瀏覽器硬拉成歪斜字 */
+  font-style: normal;
 }
 
 .prose blockquote > * + * {
@@ -538,6 +548,29 @@ ol {
 .prose th {
   background: var(--color-primary-soft);
   font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .prose {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+  }
+
+  .prose > * + * {
+    margin-block-start: var(--space-4);
+  }
+
+  .prose h2 {
+    margin-block-start: var(--space-8);
+  }
+
+  .prose h3 {
+    margin-block-start: var(--space-6);
+  }
+
+  .prose blockquote {
+    padding-inline: var(--space-4);
+  }
 }
 
 /* 表格在窄螢幕可獨立橫向捲動，頁面本身永遠不橫向捲動 */
