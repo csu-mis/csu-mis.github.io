@@ -5,8 +5,8 @@ category: 招募
 summary: 行政、財務、活動、公關、美宣、器機六大部門招募實習幹部，沒有經驗也歡迎！
 author: 行政組
 tags: [招募, 幹部, 實習幹部]
-pinned: false
-draft: true
+pinned: true
+draft: false
 ---
 
 想在大學留下一些真的做過的事嗎？系學會六個部門都在招募**實習幹部**！不需要經驗，只要願意學、願意跟大家一起把事情做好。
