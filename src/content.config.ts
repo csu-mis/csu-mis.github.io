@@ -13,7 +13,7 @@ const announcements = defineCollection({
     title: z.string(),
     date: z.coerce.date(),
     updated: z.coerce.date().optional(),
-    category: z.enum(['活動', '課務', '招募', '公告', '資源']),
+    category: z.enum(['活動', '課務', '招募', '公告', '資源', '財務']),
     summary: z.string().max(160),
     author: z.string().default('資管系學會'),
     tags: z.array(z.string()).default([]),

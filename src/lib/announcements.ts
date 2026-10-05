@@ -3,7 +3,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 export type Announcement = CollectionEntry<'announcements'>;
 
 /** 公告分類的固定顯示順序（新增分類時，也要更新 content.config.ts 的 enum） */
-export const CATEGORIES = ['活動', '課務', '招募', '公告', '資源'] as const;
+export const CATEGORIES = ['活動', '課務', '招募', '公告', '資源', '財務'] as const;
 export type Category = (typeof CATEGORIES)[number];
 
 /** 分類對應的網址片段，避免中文出現在路徑中 */
@@ -13,6 +13,7 @@ export const CATEGORY_SLUGS: Record<Category, string> = {
   招募: 'recruiting',
   公告: 'notices',
   資源: 'resources',
+  財務: 'finance',
 };
 
 export function slugToCategory(slug: string): Category | undefined {
