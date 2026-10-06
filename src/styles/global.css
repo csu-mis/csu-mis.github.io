@@ -203,6 +203,16 @@ ol {
   padding-block: clamp(var(--space-8), 5vw, var(--space-16));
 }
 
+/* 夾在兩個 section--tight 之間時用，自身不加 padding，避免上下間距疊加成兩倍 */
+.section--flush {
+  padding-block: 0;
+}
+
+/* 只接在另一個 section--tight 後面時用：保留下方 padding，上方交給前一段 */
+.section--flush-top {
+  padding-block-start: 0;
+}
+
 .stack > * + * {
   margin-block-start: var(--space-4);
 }

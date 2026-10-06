@@ -5,12 +5,20 @@ import Icon from '../components/Icon.astro';
 import { site, about } from '../lib/site';
 import { useTranslations } from '../i18n';
 import { url } from '../lib/url';
+import { CURRENT_TERM, getTerm, getDepartmentGroups, termLabel } from '../lib/officers';
 
 const t = useTranslations();
 
 const departments = (await getCollection('departments')).sort(
   (a, b) => a.data.order - b.data.order
 );
+
+// 本屆幹部依部門分組，讓組織架構表能列出各部門目前由誰負責
+const currentTerm = await getTerm(CURRENT_TERM);
+const membersByDept = new Map(
+  (currentTerm ? await getDepartmentGroups(currentTerm) : []).map((group) => [group.name, group.members])
+);
+const memberCount = currentTerm?.members.length ?? 0;
 
 type SocialIcon = 'instagram' | 'facebook' | 'threads' | 'github';
 ---
@@ -38,10 +46,19 @@ type SocialIcon = 'instagram' | 'facebook' | 'threads' | 'github';
   </section>
 
   <!-- 組織架構 -->
-  <section class="section--tight structure" aria-labelledby="structure">
+  <section class="section--tight section--flush-top" aria-labelledby="structure">
     <div class="container">
       <p class="eyebrow">Structure</p>
       <h2 id="structure" class="section-title">{t.about.structureTitle}</h2>
+      {
+        currentTerm && (
+          <p class="structure__summary">
+            <span>{termLabel(currentTerm.term)}{currentTerm.years && `（${currentTerm.years}）`}</span>
+            <span>{departments.length} 個部門</span>
+            <span>{memberCount} 位幹部</span>
+          </p>
+        )
+      }
 
       <div class="table-scroll reveal">
         <table class="structure__table">
@@ -50,6 +67,7 @@ type SocialIcon = 'instagram' | 'facebook' | 'threads' | 'github';
             <tr>
               <th scope="col">部門</th>
               <th scope="col">職掌</th>
+              <th scope="col">本屆幹部</th>
             </tr>
           </thead>
           <tbody>
@@ -58,6 +76,16 @@ type SocialIcon = 'instagram' | 'facebook' | 'threads' | 'github';
                 <tr>
                   <th scope="row">{dept.data.name}</th>
                   <td>{dept.data.description}</td>
+                  <td>
+                    <ul class="structure__members">
+                      {(membersByDept.get(dept.data.name) ?? []).map((member) => (
+                        <li>
+                          <span class="structure__role">{member.role}</span>
+                          {member.name}
+                        </li>
+                      ))}
+                    </ul>
+                  </td>
                 </tr>
               ))
             }
@@ -72,7 +100,7 @@ type SocialIcon = 'instagram' | 'facebook' | 'threads' | 'github';
     </div>
   </section>
 
-  <section class="section--tight" aria-labelledby="documents-heading">
+  <section class="section--flush" aria-labelledby="documents-heading">
     <div class="container">
       <div class="documents-callout">
         <div>
@@ -107,7 +135,7 @@ type SocialIcon = 'instagram' | 'facebook' | 'threads' | 'github';
   </section>
 
   <!-- 常見問題 -->
-  <section class="section--tight" aria-labelledby="faq">
+  <section class="section--flush" aria-labelledby="faq">
     <div class="container">
       <p class="eyebrow">FAQ</p>
       <h2 id="faq" class="section-title">常見問題</h2>
