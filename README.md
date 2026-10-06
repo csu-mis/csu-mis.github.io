@@ -17,6 +17,7 @@
 | 組別名稱與職掌 | `src/data/departments.json` |
 | 系學會名稱、屆數、Email、辦公室、社群連結 | `src/data/site.json` |
 | 首頁的「我們在做什麼」四張卡 | `src/data/home.json` |
+| 首頁上方的活動照片輪播 | 圖放 `src/assets/hero/`，清單與圖說在 `src/data/home.json` 的 `heroPhotos`（見下方教學） |
 | 關於頁的使命、沿革、常見問題 | `src/data/about.json` |
 | 行事曆嵌入的 Google 日曆 | `src/data/calendar.json` |
 | 網頁上的按鈕文字、標題、提示語 | `src/i18n/zh-TW.json` |
@@ -199,6 +200,20 @@ node -e "console.log(require('crypto').createHash('sha256').update('someone@exam
 
 ---
 
+## 換首頁的活動照片
+
+首頁上方的照片輪播只在電腦版出現，手機版不顯示也不會下載。
+
+1. 照片放到 `src/assets/hero/`，檔名用英文描述內容，例如 `freshman-camp.jpg`
+2. 在 `src/data/home.json` 的 `heroPhotos` 加一筆：`file` 填檔名、`caption` 是照片左下角的短圖說、`alt` 用一句話描述照片內容（給螢幕閱讀器）
+3. 陣列順序就是輪播順序，第一張是打開首頁時看到的那張
+
+- 建議 16:9 橫式，寬 1920 左右就夠；build 時會自動轉成 AVIF／WebP 並縮成多種尺寸
+- **放上來之前先移除 EXIF**（手機照片可能含 GPS 位置、拍攝時間與機型），並確認照片中的人同意公開
+- 檔名打錯或檔案不存在時，build 會直接失敗並告訴你是哪個檔
+
+---
+
 ## 本機預覽
 
 需要先安裝 [Node.js](https://nodejs.org)（建議 22 以上）與 [pnpm](https://pnpm.io)。
@@ -246,6 +261,7 @@ pnpm check       # 檢查型別與公告格式有沒有寫錯
 ```
 src/
 ├─ content/announcements/   ← 公告 Markdown（你最常動的地方）
+├─ assets/hero/             ← 首頁輪播照片（build 時自動轉 AVIF／WebP）
 ├─ data/                    ← 站台資料：幹部、部門、首頁、關於、站台設定
 ├─ i18n/                    ← 介面文字。目前只有 zh-TW，未來要加英文版時複製一份即可
 ├─ styles/

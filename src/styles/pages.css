@@ -104,6 +104,142 @@
   margin-block-start: var(--space-8);
 }
 
+/* Hero 活動照片輪播（HeroGallery.astro）——只在桌機出現，
+   900px 以下 hero 維持單欄純文字，與 HeroGallery 內的 <source media> 斷點一致。 */
+.hero-gallery {
+  display: none;
+}
+
+@media (min-width: 901px) {
+  .hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(var(--space-8), 5vw, var(--space-16));
+  }
+
+  /* 欄寬變窄，字級上限略降，仍讓「資訊管理系系學會」維持一行 */
+  .hero__title {
+    font-size: clamp(2rem, 1.1rem + 3.4vw, 3.6rem);
+  }
+
+  .hero-gallery {
+    display: block;
+    position: relative;
+    margin: 0;
+  }
+}
+
+/* 金色偏移框：呼應 eyebrow 的金線，讓照片不像直接貼上去 */
+.hero-gallery::before {
+  content: '';
+  position: absolute;
+  inset-block-start: var(--space-4);
+  inset-inline-start: var(--space-4);
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 70%, transparent);
+  border-radius: var(--radius-lg);
+  pointer-events: none;
+}
+
+.hero-gallery__frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, #ffffff 8%, var(--color-primary));
+  box-shadow: 0 24px 48px rgba(5, 12, 24, 0.35);
+}
+
+.hero-gallery__frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.03);
+  transition: opacity 900ms var(--ease), transform 6s linear;
+}
+
+.hero-gallery__frame img.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-gallery__caption {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  padding: var(--space-12) var(--space-4) var(--space-4);
+  background: linear-gradient(transparent, rgba(5, 12, 24, 0.7));
+  font-size: var(--text-sm);
+  letter-spacing: 0.04em;
+  color: #ffffff;
+}
+
+.hero-gallery__controls {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-block-start: var(--space-6);
+}
+
+.hero-gallery__dots {
+  display: flex;
+  gap: var(--space-2);
+}
+
+/* 點擊範圍 28px，視覺上是一條細線 */
+.hero-gallery__dot {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.hero-gallery__dot::before {
+  content: '';
+  display: block;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.35);
+  transition: background 200ms var(--ease);
+}
+
+.hero-gallery__dot[aria-current='true']::before {
+  background: color-mix(in srgb, var(--color-accent) 62%, #ffffff);
+}
+
+.hero-gallery__toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.hero-gallery__toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.hero-gallery__toggle .icon-play,
+.hero-gallery[data-paused='true'] .hero-gallery__toggle .icon-pause {
+  display: none;
+}
+
+.hero-gallery[data-paused='true'] .hero-gallery__toggle .icon-play {
+  display: block;
+}
+
 /* 區塊標題列 */
 .section-head {
   display: flex;

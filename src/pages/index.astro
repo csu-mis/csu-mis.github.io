@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AnnouncementCard from '../components/AnnouncementCard.astro';
 import Icon from '../components/Icon.astro';
+import HeroGallery from '../components/HeroGallery.astro';
 import { site, home } from '../lib/site';
 import { getPublishedAnnouncements } from '../lib/announcements';
 import { useTranslations } from '../i18n';
@@ -20,21 +21,24 @@ type IconName = 'calendar' | 'book' | 'megaphone' | 'users';
       <span class="hero__glow"></span>
     </div>
     <div class="container hero__inner">
-      <p class="hero__eyebrow">{t.home.eyebrow}</p>
-      <h1 class="hero__title">
-        {t.home.heroTitle}
-        <span class="hero__accent">{t.home.heroTitleAccent}</span>
-      </h1>
-      <p class="hero__lead">{t.home.heroLead}</p>
-      <div class="hero__actions">
-        <a class="button button--on-dark" href={url("/announcements")}>
-          {t.home.heroPrimaryCta}
-          <Icon name="arrow-right" size={18} />
-        </a>
-        <a class="button button--outline-light" href={url("/officers")}>
-          {t.home.heroSecondaryCta}
-        </a>
+      <div class="hero__text">
+        <p class="hero__eyebrow">{t.home.eyebrow}</p>
+        <h1 class="hero__title">
+          {t.home.heroTitle}
+          <span class="hero__accent">{t.home.heroTitleAccent}</span>
+        </h1>
+        <p class="hero__lead">{t.home.heroLead}</p>
+        <div class="hero__actions">
+          <a class="button button--on-dark" href={url("/announcements")}>
+            {t.home.heroPrimaryCta}
+            <Icon name="arrow-right" size={18} />
+          </a>
+          <a class="button button--outline-light" href={url("/officers")}>
+            {t.home.heroSecondaryCta}
+          </a>
+        </div>
       </div>
+      <HeroGallery />
     </div>
   </section>
 

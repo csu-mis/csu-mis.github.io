@@ -1,4 +1,26 @@
 {
+  "heroPhotos": [
+    {
+      "file": "year-end-party.jpg",
+      "caption": "歲末狂歡夜",
+      "alt": "系學會幹部穿著 MIS 系服，在歲末狂歡夜活動海報前比愛心合照"
+    },
+    {
+      "file": "association-24th.jpg",
+      "caption": "第 24 屆系學會",
+      "alt": "第 24 屆系學會幹部在投影幕前比 YA 大合照"
+    },
+    {
+      "file": "gala-group.jpg",
+      "caption": "交接宴",
+      "alt": "幹部們穿著正裝，在星空背板前自拍合照"
+    },
+    {
+      "file": "ferry-trip.jpg",
+      "caption": "系遊",
+      "alt": "同學們在渡輪船艙裡擠在一起自拍"
+    }
+  ],
   "highlights": [
     {
       "icon": "calendar",
