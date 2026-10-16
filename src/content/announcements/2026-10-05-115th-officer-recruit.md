@@ -5,7 +5,7 @@ category: 招募
 summary: 行政、財務、活動、公關、美宣、器機六大部門招募實習幹部，沒有經驗也歡迎！
 author: 行政組
 tags: [招募, 幹部, 實習幹部]
-pinned: true
+pinned: false
 draft: false
 ---
 
@@ -51,7 +51,7 @@ draft: false
 2. **10/20（二）– 10/21（三）12:10 起** 面試（每人約 15 分鐘）
 3. **11/01（日）** 公布錄取名單
 
-## 報名方式
+## 報名方式「已結束報名」
 
-點選[報名表單](https://forms.gle/YYVyiSp27dQVMopV9)報名！<br>
+點選 ~~[報名表單](https://forms.gle/YYVyiSp27dQVMopV9)~~ 報名！<br>
 面試通知會用電子郵件寄出，請留意信箱～

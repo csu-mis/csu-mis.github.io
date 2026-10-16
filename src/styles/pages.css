@@ -732,15 +732,6 @@
 }
 
 /* 組織架構 */
-.structure__summary {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-6);
-  margin-block-start: var(--space-3);
-  color: var(--color-muted-foreground);
-  font-size: var(--text-sm);
-}
-
 .structure__table {
   width: 100%;
   min-width: 640px;
@@ -790,20 +781,12 @@
 }
 
 .structure__members li {
-  display: inline-flex;
-  align-items: baseline;
-  gap: var(--space-2);
   padding: var(--space-1) var(--space-3);
   border-radius: 999px;
   background: var(--color-primary-soft);
   color: var(--color-foreground);
   font-size: var(--text-sm);
   white-space: nowrap;
-}
-
-.structure__role {
-  color: var(--color-muted-foreground);
-  font-size: var(--text-xs);
 }
 
 .structure__table tbody tr:last-child th,
